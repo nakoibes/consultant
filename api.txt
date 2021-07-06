@@ -1,0 +1,2 @@
+API по проверке статуса налогоплатильщика
+https://data.nalog.ru/html/sites/www.npd.nalog.ru/api_statusnpd_nalog_ru.pdf
