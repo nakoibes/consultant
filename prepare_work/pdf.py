@@ -12,7 +12,7 @@ def getFilename_fromCd(cd):
 def read_2():
     import slate3k as slate
 
-    with open('1.pdf', 'rb') as f:
+    with open('qwe/1.pdf', 'rb') as f:
         doc = slate.PDF(f)
     for i in range(len(doc)):
         print(re.sub(r'\n\n', ' ', doc[i]))
