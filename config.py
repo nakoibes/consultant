@@ -1,2 +1,2 @@
 class Config:
-    SECRET_KEY="qweqweq"
+    SECRET_KEY = "qweqweq"

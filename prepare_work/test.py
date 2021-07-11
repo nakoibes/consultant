@@ -10,7 +10,7 @@ key = "6b6d3dc1db81eb304b998af41ef6e91d47b3bb5f"
 # q = "Сбербанк"
 q = "Гроднева Галина Александровна"
 # inn = "7713398595"
-inn = "123"
+inn = "7709750937"
 j = {"inn": "614570014372",
      "requestDate": "2021-06-06"}
 # r = requests.get(f"https://api-fns.ru/api/check?req={inn}&key={key}", )
