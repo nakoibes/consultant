@@ -1,7 +1,8 @@
+
 from application.app import app
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, redirect, url_for
 from application.forms import SearchForm
-import requests
+from application.service import  IPSearcher, ULSearcher
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -14,8 +15,16 @@ def index():
 
 @app.route("/search/<inn>", methods=["GET", "POST"])
 def search(inn):
-    key = "6b6d3dc1db81eb304b998af41ef6e91d47b3bb5f"
-    r = requests.get(f"https://api-fns.ru/api/egr?req={inn}&key={key}", )
-    if r.json():
-        return r.json().get("items")[0].get("ЮЛ").get("Адрес").get("АдресПолн")
-    return "Неверный инн"
+    inn = inn
+    if len(inn) == 12:
+        handler = IPSearcher(inn)
+        result = handler.handle()
+    else:
+        handler = ULSearcher(inn)
+        result = handler.handle()
+    #print(result)
+    if result:
+        return render_template("result_ip.html", data=result)
+    else:
+        return "Неверный ИНН"
+

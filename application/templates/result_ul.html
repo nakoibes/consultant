@@ -1,0 +1,30 @@
+<html>
+<head>
+
+</head>
+<body>
+<h2>Результат</h2>
+
+<p>{{ result.get("type") }}</p>
+{% if result.get("inn") %}
+<p>ИНН {{ result.get("inn") }}</p>
+{% endif %}
+{% if result.get("address") %}
+<p>Адрес {{result.get("address")}}</p>
+{% endif %}
+{% if result.get("director") %}
+<p>{{result.get("director")}}</p>
+{% endif %}
+{% if result.get("ogrn") %}
+<p>ОГРН {{result.get("ogrn")}}</p>
+{% endif %}
+{% if result.get("ogrn_date") %}
+<p>Дата присвоения ОГРН {{result.get("ogrn_date")}}</p>
+{% endif %}
+{% if result.get("kpp") %}
+<p>КПП {{result.get("kpp")}}</p>
+{% endif %}
+
+
+</body>
+</html>
