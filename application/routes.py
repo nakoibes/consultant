@@ -1,8 +1,10 @@
+from pprint import pprint
 
 from application.app import app
 from flask import render_template, redirect, url_for
 from application.forms import SearchForm
-from application.service import  IPSearcher, ULSearcher
+from application.service import IPSearcher, ULSearcher
+from application.app import session
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -20,11 +22,10 @@ def search(inn):
         handler = IPSearcher(inn)
         result = handler.handle()
     else:
-        handler = ULSearcher(inn)
+        handler = ULSearcher(inn, session)
         result = handler.handle()
-    #print(result)
+    # pprint(result)
     if result:
-        return render_template("result_ip.html", data=result)
+        return render_template("result.html", data=result)
     else:
         return "Неверный ИНН"
-

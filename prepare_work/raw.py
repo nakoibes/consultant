@@ -63,7 +63,8 @@ def check_EGRUL(query):
     print(json.dumps(json_res, ensure_ascii=False, indent=4))
     # return json.dumps(json_res, ensure_ascii=False,indent = 4)
 
-#проверка ИП на проф налог принимает inn, date возвращает текст
+
+# проверка ИП на проф налог принимает inn, date возвращает текст
 def check_IP(guery, date):
     data = {
         "__EVENTTARGET": "",
@@ -175,14 +176,14 @@ def PROZR_B(inn):
     url = "https://pb.nalog.ru/search-proc.json"
     result = session.post(url, data=data).text
     json_res = json.loads(result)
-
+    print(json_res)
     try:
         token = json_res['ip']['data'][0]['token']
     except Exception as e:
         token = json_res['ul']['data'][0]['token']
 
-    print(json.dumps(json_res, ensure_ascii=False, indent=4))
-    print("---------------------------------------------------")
+    # print(json.dumps(json_res, ensure_ascii=False, indent=4))
+    # print("---------------------------------------------------")
     url = "https://pb.nalog.ru/company-proc.json"
 
     payload = {'token': token,
@@ -208,14 +209,15 @@ def PROZR_B(inn):
 
 
 if __name__ == '__main__':
-    #check_not_valid_SVID_2_FL("143400305675")
-     #check_not_valid_SVID_1("26", "002880478")
-     #check_not_valid_SVID_3_UL("7707083893")
-    #check_IP("500111104168","2021-07-04")
-    PROZR_B("7709750937")
-    # app.run(host='0.0.0.0',debug=True)
-    #check_EGRUL("7709750937")
-    #check_IP("143400305674","2021-07-04")
+    # check_not_valid_SVID_2_FL("143400305675")
+    # check_not_valid_SVID_1("26", "002880478")
+    # check_not_valid_SVID_3_UL("7707083893")
+    check_IP("500111104168", "2021-07-04")
+    # PROZR_B("7709750937")
+# PROZR_B("7713398595")
+# app.run(host='0.0.0.0',debug=True)
+# check_EGRUL("7709750937")
+# check_IP("143400305674","2021-07-04")
 # if __name__ == '__main__':
 #     # search("Борунов Алексей Владимирович")
 #     #json_usage()

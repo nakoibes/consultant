@@ -5,7 +5,9 @@
 <body>
 <h2>Результат</h2>
 {% for key,value in data.items() %}
+{% if value %}
 <p>{{ key }} {{value}}</p>
+{%endif%}
 {% endfor %}
 </body>
 </html>
