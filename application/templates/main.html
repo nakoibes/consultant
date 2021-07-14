@@ -1,15 +1,4 @@
-<html>
-<head>
-</head>
-<body>
-<h1>Поиск</h1>
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.search_field.label }}<br>
-        {{ form.search_field(size=32) }}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+{% endblock %}

@@ -12,11 +12,14 @@ def index():
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for("search", inn=form.search_field.data))
-    return render_template("main.html", form=form)
+    return render_template("main.html", form=form, title="Поиск")
 
 
 @app.route("/search/<inn>", methods=["GET", "POST"])
 def search(inn):
+    form = SearchForm()
+    if form.validate_on_submit():
+        return redirect(url_for("search", inn=form.search_field.data))
     inn = inn
     if len(inn) == 12:
         handler = IPSearcher(inn)
@@ -24,8 +27,7 @@ def search(inn):
     else:
         handler = ULSearcher(inn, session)
         result = handler.handle()
-    # pprint(result)
     if result:
-        return render_template("result.html", data=result)
+        return render_template("result.html", data=result, form=form)
     else:
         return "Неверный ИНН"

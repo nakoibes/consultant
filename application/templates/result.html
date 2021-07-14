@@ -1,13 +1,33 @@
-<html>
-<head>
+{% extends 'base.html' %}
 
-</head>
-<body>
-<h2>Результат</h2>
-{% for key,value in data.items() %}
-{% if value %}
-<p>{{ key }} {{value}}</p>
-{%endif%}
-{% endfor %}
-</body>
-</html>
+{% block app_content %}
+<h3>Результат</h3>
+<div>
+    <span>
+    {{ data.name }}
+    ИНН: {{data.inn}}
+    </span>
+    <div>
+        <b>По состоянию на {{data.date}}</b>
+    </div>
+    <div>
+        {{data.full_name}} {{data.status}}
+    </div>
+    <div>
+        <b>ОГРН:</b> {{data.ogrn}}
+        <b>КПП:</b> {{data.kpp}}
+    </div>
+    <div>
+        <b>Дата присвоения ОГРН:</b> {{data.ogrn_date}}
+        <b>Уставной капитал:</b> {{data.kapital}}
+    </div>
+        <div>
+        <b>Дата регистрации:</b> {{data.date_reg}}
+    </div>
+</div>
+<!--{% for key,value in data.items() %}-->
+<!--{% if value %}-->
+<!--<p>{{ key }} {{value}}</p>-->
+<!--{%endif%}-->
+<!--{% endfor %}-->
+{% endblock %}
