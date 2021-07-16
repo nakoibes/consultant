@@ -7,27 +7,74 @@
     {{ data.name }}
     ИНН: {{data.inn}}
     </span>
+    {% if data.date%}
     <div>
         <b>По состоянию на {{data.date}}</b>
     </div>
+    {%endif%}
+    {% if data.full_name%}
     <div>
         {{data.full_name}} {{data.status}}
     </div>
+    {%endif%}
+    {% if data.ogrn%}
     <div>
         <b>ОГРН:</b> {{data.ogrn}}
         <b>КПП:</b> {{data.kpp}}
     </div>
+    {%endif%}
+
     <div>
+        {% if data.ogrn_date%}
         <b>Дата присвоения ОГРН:</b> {{data.ogrn_date}}
-        <b>Уставной капитал:</b> {{data.kapital}}
+        {%endif%}
+        {% if data.kapital%}
+        <b>Уставный капитал:</b> {{data.kapital}}
+        {%endif%}
     </div>
-        <div>
-        <b>Дата регистрации:</b> {{data.date_reg}}
+    {% if data.date_reg%}
+    <div>
+        <b>Дата регистрации:</b> {{data.date_reg}}<br>
+        <b>Компания существует в течение {{data.time_delta}} лет</b>
     </div>
+    {%endif%}
+    {% if data.stop_date%}
+    <div>
+        <b>Дата прекращения деятельности:</b> {{data.stop_date}}<br>
+    </div>
+    {%endif%}
+    {% if data.director%}
+    <div>
+        <b>Руководители </b> {{data.director}}
+    </div>
+    {%endif%}
+    {% if data.addr%}
+    <div>
+        <b>Адрес:</b> {{data.addr}}
+    </div>
+    {%endif%}
+    {% if data.deyat%}
+    <div>
+        <b>Основной вид деятельности:</b> {{data.deyat}}
+    </div>
+    {%endif%}
+    {% if data.court_total%}
+    <div>
+        <b>Всего судов</b> {{ data.court_total}}<br>
+        {% if data.court_ist%}
+        <b>В качестве истца</b> {{ data.court_ist}}<br>
+        {%endif%}
+        {% if data.court_ans%}
+        <b>В качестве ответчика</b> {{ data.court_ans}}<br>
+        {%endif%}
+        {% if data.court_th_l%}
+        <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>
+        {%endif%}
+        {% if data.court_other%}
+        <b>Другое</b> {{ data.court_other}}<br>
+        {%endif%}
+
+    </div>
+    {%endif%}
 </div>
-<!--{% for key,value in data.items() %}-->
-<!--{% if value %}-->
-<!--<p>{{ key }} {{value}}</p>-->
-<!--{%endif%}-->
-<!--{% endfor %}-->
 {% endblock %}

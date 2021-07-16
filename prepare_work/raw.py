@@ -209,11 +209,12 @@ def PROZR_B(inn):
 
 
 if __name__ == '__main__':
+    pass
     # check_not_valid_SVID_2_FL("143400305675")
     # check_not_valid_SVID_1("26", "002880478")
     # check_not_valid_SVID_3_UL("7707083893")
-    check_IP("500111104168", "2021-07-04")
-    # PROZR_B("7709750937")
+    #check_IP("500111104168", "2021-07-04")
+    #PROZR_B("7709750937")
 # PROZR_B("7713398595")
 # app.run(host='0.0.0.0',debug=True)
 # check_EGRUL("7709750937")

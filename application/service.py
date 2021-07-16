@@ -1,11 +1,13 @@
+import locale
 from datetime import datetime
 from pprint import pprint
-
+import socks
+import socket
 import requests as requests
 
-from application.magic import check_EGRUL, PROZR_B, check_IP, prozr
+from application.magic import check_EGRUL, PROZR_B, check_IP, prozr, kadarbitr_1
 
-key = "6b6d3dc1db81eb304b998af41ef6e91d47b3bb5f"
+key = "466c09ea169672bed651f6a4a9a90d1f73a4ad73"
 
 
 class IPSearcher:
@@ -31,23 +33,49 @@ class IPSearcher:
 
 
 class ULSearcher:
-    def __init__(self, inn, session):
+    def __init__(self, inn):
         self.inn = inn
-        self.session = session
 
     def handle(self):
+        locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
         result_dict = dict()
         raw_eg = check_EGRUL(self.inn)
+
+        # court_total, court_ist, court_ans, court_th_l, court_other = kadarbitr_1(self.inn)
+        # court_other = int(court_total) - int(court_ist) - int(court_ans) - int(court_th_l)
+        # result_dict.update(
+        #     {"court_total": court_total, "court_ist": court_ist, "court_ans": court_ans, "court_th_l": court_th_l,
+        #      "court_other": court_other})
+
         r = requests.get(f"https://api-fns.ru/api/egr?req={self.inn}&key={key}", )
+        print(r)
         if r:
-            status = r.json().get("items")[0].get("ЮЛ").get("Статус")
-            deyat = r.json().get("items")[0].get("ЮЛ").get("ОснВидДеят").get("Текст")
-            date_reg = r.json().get("items")[0].get("ЮЛ").get("ДатаРег")
-            result_dict.update({"status": status, "deyat": deyat, "date_reg": date_reg})
-        r1 = requests.get(f"https://api-fns.ru/api/egr?req={self.inn}&key={key}")
-        if r1:
-            kapital = r.json().get("items")[0].get("ЮЛ").get("Капитал").get("СумКап")
-            result_dict.update({"kapital": kapital})
+            status = r.json().get("items")[0].get("ЮЛ").get("Статус", "mock")
+            deyat = r.json().get("items")[0].get("ЮЛ").get("ОснВидДеят").get("Текст", "mock")
+            date_reg = r.json().get("items")[0].get("ЮЛ").get("ДатаРег", "mock")
+            kapital = r.json().get("items")[0].get("ЮЛ").get("Капитал").get("СумКап", "mock")
+            #print(kapital)
+            result_dict.update({"status": status, "deyat": deyat, "date_reg": datetime.strptime(date_reg,
+                                                                                                '%Y-%m-%d').date(),
+                                "kapital": '{:,}'.format(int(kapital))  + " руб",
+                                "time_delta": (datetime.date(datetime.today()) - datetime.strptime(date_reg,
+                                                                                                   '%Y-%m-%d').date()).days // 365})
+
+        # r1 = requests.get(f"https://api-fns.ru/api/egr?q={self.inn}&key={key}")
+        # if r1:
+        #     stop_date = r1.json().get("items")[0].get("ЮЛ").get("ДатаПрекр")
+        #     result_dict.update({"stop_date": stop_date})
+
+        # try:
+        #     raw_biz_1 = PROZR_B("7713398595")
+        #     raw_biz_2 = prozr(raw_biz_1)
+        #     deyat = raw_biz_1.get("ul").get("data")[0].get("okved2name")
+        #     raw_biz_2 = prozr(raw_biz_1)
+        #     kapital = raw_biz_2.get("vyp").get("СумКап")
+        #     result_dict.update({"deyat": deyat, "kapital": kapital})
+        # except:
+        #     pass
+
         if raw_eg.get("rows"):
             address = raw_eg.get("rows")[0].get("a")
             name = raw_eg.get("rows")[0].get("c")
@@ -58,19 +86,19 @@ class ULSearcher:
             kpp = raw_eg.get("rows")[0].get("p")
             ogrn_date = raw_eg.get("rows")[0].get("r")
             result_dict.update(
-                {"date": datetime.date(datetime.today()), "type": "Юридическое лицо", "addr": address,
+                {"date": datetime.today().strftime("%-d %B %Y"), "type": "Юридическое лицо", "addr": address,
                  "name": name,
                  "full_name": full_name,
                  "director": director, "inn": inn,
                  "ogrn": ogrn,
                  "kpp": kpp,
                  "ogrn_date": ogrn_date})
-
         return result_dict
 
 
 if __name__ == '__main__':
-    pprint(check_EGRUL("7713398595"))
+    pass
+    # pprint(check_EGRUL("7713398595"))
     # s = ULSearcher("7713398595")
     # result = s.handle()
     # a = PROZR_B("7713398595")
