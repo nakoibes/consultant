@@ -5,7 +5,7 @@ import socks
 import socket
 import requests as requests
 
-from application.magic import check_EGRUL, PROZR_B, check_IP, prozr, kadarbitr_1
+from application.functions import check_EGRUL, PROZR_B, check_IP, prozr, kadarbitr_1
 
 key = "466c09ea169672bed651f6a4a9a90d1f73a4ad73"
 
