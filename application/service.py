@@ -47,19 +47,19 @@ class ULSearcher:
         #     {"court_total": court_total, "court_ist": court_ist, "court_ans": court_ans, "court_th_l": court_th_l,
         #      "court_other": court_other})
 
-        r = requests.get(f"https://api-fns.ru/api/egr?req={self.inn}&key={key}", )
-        print(r)
-        if r:
-            status = r.json().get("items")[0].get("ЮЛ").get("Статус", "mock")
-            deyat = r.json().get("items")[0].get("ЮЛ").get("ОснВидДеят").get("Текст", "mock")
-            date_reg = r.json().get("items")[0].get("ЮЛ").get("ДатаРег", "mock")
-            kapital = r.json().get("items")[0].get("ЮЛ").get("Капитал").get("СумКап", "mock")
-            #print(kapital)
-            result_dict.update({"status": status, "deyat": deyat, "date_reg": datetime.strptime(date_reg,
-                                                                                                '%Y-%m-%d').date(),
-                                "kapital": '{:,}'.format(int(kapital))  + " руб",
-                                "time_delta": (datetime.date(datetime.today()) - datetime.strptime(date_reg,
-                                                                                                   '%Y-%m-%d').date()).days // 365})
+        # r = requests.get(f"https://api-fns.ru/api/egr?req={self.inn}&key={key}", )
+        # print(r)
+        # if r:
+        #     status = r.json().get("items")[0].get("ЮЛ").get("Статус", "mock")
+        #     deyat = r.json().get("items")[0].get("ЮЛ").get("ОснВидДеят").get("Текст", "mock")
+        #     date_reg = r.json().get("items")[0].get("ЮЛ").get("ДатаРег", "mock")
+        #     kapital = r.json().get("items")[0].get("ЮЛ").get("Капитал").get("СумКап", "mock")
+        #     #print(kapital)
+        #     result_dict.update({"status": status, "deyat": deyat, "date_reg": datetime.strptime(date_reg,
+        #                                                                                         '%Y-%m-%d').date(),
+        #                         "kapital": '{:,}'.format(int(kapital))  + " руб",
+        #                         "time_delta": (datetime.date(datetime.today()) - datetime.strptime(date_reg,
+        #                                                                                            '%Y-%m-%d').date()).days // 365})
 
         # r1 = requests.get(f"https://api-fns.ru/api/egr?q={self.inn}&key={key}")
         # if r1:

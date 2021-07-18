@@ -1,22 +1,50 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-<h3>Результат</h3>
+
+<div class="main_first">
+    <div>
+        <b>По состоянию на {{data.date}}</b><br>
+        {% if data.full_name%}
+        {{data.full_name}} {{data.status}}
+        {%endif%}
+    </div>
+
+</div>
+
+<div class="main_second">
+    <div class="main_second_left">
+        <div class="main_second_left_first">
+            <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
+            <span class="one"><b>ИНН/КПП:</b><br> {{data.kpp}}/{{data.inn}}</span>
+        </div>
+        <div class="main_second_left_second">
+            {% if data.date_reg%}
+            <span class="one"><b>Дата регистрации:</b> {{data.date_reg}}<br>
+        <b>Компания существует в течение {{data.time_delta}} лет</b></span>
+            {%endif%}
+            <span class="one">        {% if data.kapital%}
+        <b>Уставный капитал:</b> {{data.kapital}}
+        {%endif%}</span>
+        </div>
+    </div>
+
+    <div class="main_second_right">
+
+    </div>
+
+</div>
+
+
 <div>
     <span>
     {{ data.name }}
     ИНН: {{data.inn}}
     </span>
     {% if data.date%}
-    <div>
-        <b>По состоянию на {{data.date}}</b>
-    </div>
+
     {%endif%}
-    {% if data.full_name%}
-    <div>
-        {{data.full_name}} {{data.status}}
-    </div>
-    {%endif%}
+
     {% if data.ogrn%}
     <div>
         <b>ОГРН:</b> {{data.ogrn}}

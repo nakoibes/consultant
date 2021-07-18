@@ -1,0 +1,222 @@
+/*body {*/
+/*  font-family:      Verdana, Geneva, Arial, sans-serif;*/
+/*  font-size:        medium;*/
+/*  background-color: Cornsilk;*/
+/*  margin-top:       2%;*/
+/*  margin-bottom:    5%;*/
+/*  margin-left:      10%;*/
+/*  margin-right:     10%;*/
+/*  border:           1px dotted gray;*/
+/*  padding:          10px 10px 10px 10px;*/
+/*}*/
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: Cornsilk;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a img {
+    border: 0;
+}
+
+h2 {
+    font-size: 150%;
+}
+
+table {
+    margin-left: 20px;
+    margin-right: 20px;
+    caption-side: bottom;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 5px;
+    text-align: left;
+}
+
+.copyright {
+    font-size: 75%;
+    font-style: italic;
+}
+
+.slogan {
+    font-size: 75%;
+    font-style: italic;
+}
+
+.confirmentry {
+    font-weight: 600;
+}
+
+/*** Tables ***/
+
+table {
+    font-size: 1em;
+    background-color: #fafcff;
+    border: 1px solid #909090;
+    color: #2a2a2a;
+    padding: 5px 5px 2px;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: thin dotted gray;
+}
+
+/*** Inputs ***/
+input[type=text] {
+    font-size: 115%;
+    width: 30em;
+}
+
+input[type=submit] {
+    font-size: 125%;
+}
+
+select {
+    font-size: 125%;
+}
+
+div.header {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: flex;
+    height: 100%;
+    margin-top: 2%;
+    /*margin-bottom: 5%;*/
+    margin-left: 5%;
+    margin-right: 5%;
+    /*border: 1px dotted gray;*/
+    /*padding: 10px 10px 10px 10px;*/
+}
+
+span.header_name {
+    font-size: large;
+    background-color: LimeGreen;
+    /*margin-top: 2%;*/
+    /*margin-bottom: 5%;*/
+    /*margin-left:      0;*/
+    /*margin-right: 10%;*/
+    width: 25%;
+    /*height: 50px;*/
+    /*border: 1px dotted gray;*/
+    /*padding: 40px 10px 10px 30px;*/
+    padding: 10px 10px 10px 10px;
+    padding-top: 15px;
+    /*align-content: center;*/
+    /*align-items: center*/
+}
+
+span.search_field {
+    font-family: Verdana, Geneva, Arial, sans-serif;
+    /*font-size: medium;*/
+    background-color: LightGray;
+    /*margin-top:       2%;*/
+    /*margin-bottom: 5%;*/
+    /*margin-left: 0;*/
+    /*margin-right: 10%;*/
+    /*border: 1px dotted gray;*/
+    width: 55%;
+    padding: 10px 10px 10px 10px;
+    /*padding-bottom: 5%;*/
+    /*position:absolute;*/
+    /*left: auto;*/
+    /*height: 100px;*/
+}
+
+
+span.menu {
+    /*font-size: medium;*/
+    background-color: Silver;
+    /*margin-top:       2%;*/
+    /*margin-bottom: 5%;*/
+    /*margin-left: 30%;*/
+    /*margin-right: 10%;*/
+    /*border: 1px dotted gray;*/
+    /*padding: 10px 10px 10px 10px;*/
+    width: 10%;
+    left: 100px;
+
+}
+
+span.otch {
+    /*font-size: medium;*/
+    background-color: Grey;
+    /*margin-top:       2%;*/
+    /*margin-bottom: 5%;*/
+    /*margin-left: 30%;*/
+    /*margin-right: 10%;*/
+    /*border: 1px dotted gray;*/
+    /*padding: 10px 10px 10px 10px;*/
+    width: 10%;
+    left: 100px;
+
+}
+
+input[type=text] {
+    font-size: 115%;
+    width: 60%;
+}
+
+div.main {
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: Snow;
+    /*padding: 10px 10px 10px 10px;*/
+    padding-left: 10px;
+    /*padding-top: 10px;*/
+    margin-top: 10px;
+    height: 100%;
+}
+
+div.main_first {
+    line-height: 3;
+    /*margin-top: 2%;*/
+    padding-top: 10px;
+}
+
+div.main_second {
+    display: flex;
+    line-height: 3;
+    /*margin-top: 2%;*/
+    padding-top: 10px;
+}
+
+div.main_second_left {
+    width: 50%;
+    /*display: flex;*/
+    /*    line-height: 3;*/
+    /*margin-top: 2%;*/
+    /*padding-top: 10px;*/
+}
+
+div.main_second_left_first {
+    display: flex;
+    /*align-items: center;*/
+    /*align-content: center;*/
+    /*align-content: center;*/
+}
+div.main_second_left_second {
+    display: flex;
+    /*align-items: center;*/
+    /*align-content: center;*/
+    /*align-content: center;*/
+}
+span.one {
+    /*align-content: center;*/
+    line-height: 1.5;
+    width: 50%;
+    text-align: center;
+}

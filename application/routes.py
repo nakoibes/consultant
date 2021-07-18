@@ -11,7 +11,7 @@ def index():
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for("search", inn=form.search_field.data))
-    return render_template("main.html", form=form, title="Поиск")
+    return render_template("main.html", form=form, title="Сервис по оценке контрагента", data={"name": "Поиск"})
 
 
 @app.route("/search/<inn>", methods=["GET", "POST"])
