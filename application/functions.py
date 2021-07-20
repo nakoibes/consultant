@@ -156,6 +156,7 @@ def kadarbitr_1(inn):
 
 
 def PB_addr(addr):
+    '''REGINA'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -211,6 +212,7 @@ def PB_addr(addr):
 
 
 def PB_neskolko_UL(inn):
+    '''REGINA'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -276,6 +278,7 @@ def PB_neskolko_UL(inn):
 
 
 def PB_diskvalif(fio):
+    '''REGINA'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -335,6 +338,7 @@ def PB_diskvalif(fio):
 
 
 def PB_ip(inn):
+    '''REGINA'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -412,6 +416,7 @@ def PB_ip(inn):
 
 
 def PB_ul(inn):
+    '''REGINA'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
     data = {
