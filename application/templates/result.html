@@ -2,107 +2,174 @@
 
 {% block app_content %}
 
-<div class="main_first">
-    <div>
-        <b>По состоянию на {{data.date}}</b><br>
-        {% if data.full_name%}
-        {{data.full_name}} {{data.status}}
-        {%endif%}
-    </div>
+<div class="main_">
+    <div class="main_left">
+        <div class="main_first">
+            <div>
+                <b>По состоянию на {{data.date}}</b><br>
+                {% if data.full_name%}
+                {{data.full_name}} <font color="DarkViolet	">{{data.status}}</font>
+                {%endif%}
+            </div>
 
-</div>
-
-<div class="main_second">
-    <div class="main_second_left">
-        <div class="main_second_left_first">
-            <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
-            <span class="one"><b>ИНН/КПП:</b><br> {{data.kpp}}/{{data.inn}}</span>
         </div>
-        <div class="main_second_left_second">
-            {% if data.date_reg%}
-            <span class="one"><b>Дата регистрации:</b> {{data.date_reg}}<br>
-        <b>Компания существует в течение {{data.time_delta}} лет</b></span>
+
+        <div class="main_second">
+            <div class="main_second_left">
+                <div class="main_second_left_first">
+                    <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
+                    <span class="one"><b>ИНН/КПП:</b><br> {{data.inn}}/{{data.kpp}}</span>
+                </div>
+                <div class="main_second_left_second">
+                    {% if data.date_reg%}
+                    <span class="one"><b>Дата регистрации:</b><br> {{data.date_reg}}<br>
+                    Компания существует в течение {{data.time_delta}} лет</span>
+                    {%endif%}
+                    <span class="one">
+                    {% if data.kapital%}
+                    <b>Уставный капитал:</b><br> {{data.kapital}}
+                    {%endif%}
+                </span>
+                </div>
+                <div class="main_second_third">
+                    {%if data.director%}
+                    <b>Руководители: </b><br> {{data.director}}<br>
+                    {%endif%}
+                    {% if data.addr%}
+
+                    <b>Адрес:</b><br> {{data.addr}}<br>
+                    {% if data.masaddress%}
+                    <b>Компаний, зарегестрированных по данному адресу:</b><br> {{ data.masaddress}}<br>
+                    {%endif%}
+                    {%endif%}
+                    <br>
+                    <b>Контакты: </b>
+                </div>
+            </div>
+
+            <div class="main_second_right">
+                {% if data.deyat%}
+                <div>
+                    <b>Основной вид деятельности:</b><br> {{data.deyat}}
+                </div>
+                {%endif%}
+                {% if data.msp%}
+                <div>
+                    <b>Субъект МСП:</b><br> {{data.msp}}
+                </div>
+                {%endif%}
+            </div>
+        </div>
+
+    </div>
+    <div class="main_right">
+        <div class="title"><b>Сведения, требующие внимания:</b></div>
+        {% if data.court_total%}
+        <div>
+            <b>Всего судов</b> {{ data.court_total}}<br>
+            {% if data.court_ist%}
+            <b>В качестве истца</b> {{ data.court_ist}}<br>
             {%endif%}
-            <span class="one">        {% if data.kapital%}
-        <b>Уставный капитал:</b> {{data.kapital}}
-        {%endif%}</span>
+            {% if data.court_ans%}
+            <b>В качестве ответчика</b> {{ data.court_ans}}<br>
+            {%endif%}
+            {% if data.court_th_l%}
+            <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>
+            {%endif%}
+            {% if data.court_other%}
+            <b>Другое</b> {{ data.court_other}}<br>
+            {%endif%}
+
+
         </div>
+        {%endif%}
     </div>
-
-    <div class="main_second_right">
-
-    </div>
+</div>
+<div class="other_info">
+    {%if data.nalog_debt %}
+    <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{data.nalog_debt}}<br>
+    {%endif%}
+    {%if data.nalog_info%}
+    <b>Сведения о непредставлении налоговой отчетности: </b><br> {{data.nalog_info}}<br>
+    {%endif%}
+    {%if data.fine_sum%}
+    <b>Сведения о суммах недоимки и задолженности по пеням и штрафам: </b><br> {{data.fine_sum}}<br>
+    {%endif%}
+    {% if data.nalog_offense%}
+    <b>Налоговые правонарушения:</b><br> {{ data.nalog_offense}}<br>
+    {%endif%}
+    {% if data.taxmode%}
+    <b>Специальные налоговые режимы:</b><br> {{ data.taxmode}}<br>
+    {%endif%}
 
 </div>
+<!--<div>-->
+<!--    <span>-->
+<!--    {{ data.name }}-->
+<!--    ИНН: {{data.inn}}-->
+<!--    </span>-->
+<!--    {% if data.date%}-->
 
+<!--    {%endif%}-->
 
-<div>
-    <span>
-    {{ data.name }}
-    ИНН: {{data.inn}}
-    </span>
-    {% if data.date%}
+<!--    {% if data.ogrn%}-->
+<!--    <div>-->
+<!--        <b>ОГРН:</b> {{data.ogrn}}-->
+<!--        <b>КПП:</b> {{data.kpp}}-->
+<!--    </div>-->
+<!--    {%endif%}-->
 
-    {%endif%}
+<!--    <div>-->
+<!--        {% if data.ogrn_date%}-->
+<!--        <b>Дата присвоения ОГРН:</b> {{data.ogrn_date}}-->
+<!--        {%endif%}-->
+<!--        {% if data.kapital%}-->
+<!--        <b>Уставный капитал:</b> {{data.kapital}}-->
+<!--        {%endif%}-->
+<!--    </div>-->
+<!--    {% if data.date_reg%}-->
+<!--    <div>-->
+<!--        <b>Дата регистрации:</b> {{data.date_reg}}<br>-->
+<!--        <b>Компания существует в течение {{data.time_delta}} лет</b>-->
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--    {% if data.stop_date%}-->
+<!--    <div>-->
+<!--        <b>Дата прекращения деятельности:</b> {{data.stop_date}}<br>-->
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--    {% if data.director%}-->
+<!--    <div>-->
+<!--        <b>Руководитель </b> {{data.director}}-->
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--    {% if data.addr%}-->
+<!--    <div>-->
+<!--        <b>Адрес:</b> {{data.addr}}-->
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--    {% if data.deyat%}-->
+<!--    <div>-->
+<!--        <b>Основной вид деятельности:</b> {{data.deyat}}-->
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--    {% if data.court_total%}-->
+<!--    <div>-->
+<!--        <b>Всего судов</b> {{ data.court_total}}<br>-->
+<!--        {% if data.court_ist%}-->
+<!--        <b>В качестве истца</b> {{ data.court_ist}}<br>-->
+<!--        {%endif%}-->
+<!--        {% if data.court_ans%}-->
+<!--        <b>В качестве ответчика</b> {{ data.court_ans}}<br>-->
+<!--        {%endif%}-->
+<!--        {% if data.court_th_l%}-->
+<!--        <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>-->
+<!--        {%endif%}-->
+<!--        {% if data.court_other%}-->
+<!--        <b>Другое</b> {{ data.court_other}}<br>-->
+<!--        {%endif%}-->
 
-    {% if data.ogrn%}
-    <div>
-        <b>ОГРН:</b> {{data.ogrn}}
-        <b>КПП:</b> {{data.kpp}}
-    </div>
-    {%endif%}
-
-    <div>
-        {% if data.ogrn_date%}
-        <b>Дата присвоения ОГРН:</b> {{data.ogrn_date}}
-        {%endif%}
-        {% if data.kapital%}
-        <b>Уставный капитал:</b> {{data.kapital}}
-        {%endif%}
-    </div>
-    {% if data.date_reg%}
-    <div>
-        <b>Дата регистрации:</b> {{data.date_reg}}<br>
-        <b>Компания существует в течение {{data.time_delta}} лет</b>
-    </div>
-    {%endif%}
-    {% if data.stop_date%}
-    <div>
-        <b>Дата прекращения деятельности:</b> {{data.stop_date}}<br>
-    </div>
-    {%endif%}
-    {% if data.director%}
-    <div>
-        <b>Руководители </b> {{data.director}}
-    </div>
-    {%endif%}
-    {% if data.addr%}
-    <div>
-        <b>Адрес:</b> {{data.addr}}
-    </div>
-    {%endif%}
-    {% if data.deyat%}
-    <div>
-        <b>Основной вид деятельности:</b> {{data.deyat}}
-    </div>
-    {%endif%}
-    {% if data.court_total%}
-    <div>
-        <b>Всего судов</b> {{ data.court_total}}<br>
-        {% if data.court_ist%}
-        <b>В качестве истца</b> {{ data.court_ist}}<br>
-        {%endif%}
-        {% if data.court_ans%}
-        <b>В качестве ответчика</b> {{ data.court_ans}}<br>
-        {%endif%}
-        {% if data.court_th_l%}
-        <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>
-        {%endif%}
-        {% if data.court_other%}
-        <b>Другое</b> {{ data.court_other}}<br>
-        {%endif%}
-
-    </div>
-    {%endif%}
-</div>
+<!--    </div>-->
+<!--    {%endif%}-->
+<!--</div>-->
 {% endblock %}

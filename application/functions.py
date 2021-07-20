@@ -12,6 +12,9 @@ from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import requests
 from requests import session
+import requests
+import json
+import time
 
 
 def check_EGRUL(query):
@@ -34,93 +37,6 @@ def check_EGRUL(query):
     # return json.dumps(json_res, ensure_ascii=False,indent = 4)
 
 
-def PROZR_B(inn):
-    '''REGINA'''
-    data = {
-        "page": "1",
-        "pageSize": "10",
-        "pbCaptchaToken": "",
-        "token": "",
-        "mode": "search-all",
-        "queryAll": inn,
-        "queryUl": "",
-        "okvedUl": "",
-        "statusUl": "",
-        "regionUl": "",
-        "isMspUl": "",
-        "mspUl1": "1",
-        "mspUl2": "2",
-        "mspUl3": "3",
-        "queryIp": "",
-        "okvedIp": "",
-        "statusIp": "",
-        "regionIp": "",
-        "isMspIp": "",
-        "mspIp1": "1",
-        "mspIp2": "2",
-        "mspIp3": "3",
-        "queryUpr": "",
-        "uprType1": "1",
-        "uprType0": "1",
-        "queryRdl": "",
-        "dateRdl": "",
-        "queryAddr": "",
-        "regionAddr": "",
-        "queryOgr": "",
-        "ogrFl": "1",
-        "ogrUl": "1",
-        "npTypeDoc": "1",
-        "ogrnUlDoc": "",
-        "ogrnIpDoc": "",
-        "nameUlDoc": "",
-        "nameIpDoc": "",
-        "formUlDoc": "",
-        "formIpDoc": "",
-        "ifnsDoc": "",
-        "dateFromDoc": "",
-        "dateToDoc": ""
-    }
-    url = "https://pb.nalog.ru/search-proc.json"
-    result = requests.post(url, data=data).text
-    json_res_1 = json.loads(result)
-    return json_res_1
-
-
-def prozr(data):
-    '''REGINA'''
-    try:
-        token = data['ip']['data'][0]['token']
-    except Exception as e:
-        token = data['ul']['data'][0]['token']
-
-    # print(json.dumps(json_res, ensure_ascii=False, indent=4))
-    # print("---------------------------------------------------")
-    url = "https://pb.nalog.ru/company-proc.json"
-
-    payload = {'token': token,
-               'method': 'get-request'}
-    files = [
-    ]
-    headers = {
-        'Cookie': 'JSESSIONID=71D5F26B08127DA75DE2BE6EB401C84F'
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload, files=files)
-
-    json_res = json.loads(response.text)
-    id = json_res['id']
-    data = {
-        "id": id,
-        "token": token,
-        "method": "get-response"
-    }
-    result = requests.post(url, data=data).text
-    json_res_2 = json.loads(result)
-    return json_res_2
-    # return json_res_1, json_res_2
-    # print(json.dumps(json_res, ensure_ascii=False, indent=4))
-
-
 def check_IP(guery, date):
     '''REGINA'''
     data = {
@@ -138,96 +54,6 @@ def check_IP(guery, date):
     res_text = soup.find(id="ctl00_ctl00_lblInfo").get_text()
     # print(res_text)
     return res_text
-
-
-def kadarbitr(inn):
-    '''REGINA'''
-    url = "https://kad.arbitr.ru/Kad/SearchInstances"
-
-    for i in range(-1, 3):
-        payload = json.dumps({
-            "Page": 1,
-            "Count": 25,
-            "Courts": [],
-            "DateFrom": None,
-            "DateTo": None,
-            "Sides": [
-                {
-                    "Name": inn,
-                    "Type": i,
-                    "ExactMatch": False
-                }
-            ],
-            "Judges": [],
-            "CaseNumbers": [],
-            "WithVKSInstances": False
-        })
-        headers = {
-            'Content-Type': 'application/json',
-            'Cookie': 'ASP.NET_SessionId=wq2bdjd20p15szbwnsn53ayq; wasm=c28265d6d51e64c76c4333a731c9b0bf;'
-        }
-
-        response = requests.request("POST", url, headers=headers, data=payload)
-        cnt = 0
-        res = response.text
-        soup = BeautifulSoup(res, 'html.parser')
-        for tr in soup.findAll("tr"):
-            class_num = tr.find("td", class_="num").find("div", class_="b-container")
-            type = class_num.find("div").get("class")
-            date = class_num.find("div").get("title")
-            ssylka = class_num.find("a").get("href")
-            num = class_num.find("a", class_="num_case").text.replace(" ", "").rstrip()
-            cnt += 1
-            # print("type= ", type[0])
-            # print("date= ", date)
-            # print("ssylka= ", ssylka)
-            # print("num= ", num)
-
-            class_court = tr.find("td", class_="court").find("div", class_="b-container")
-            court = class_court.find("div", class_="judge").get("title")
-            sud = class_court.find_all("div")[1].get("title")
-            # print("court= ", court)
-            # print("sud= ", sud)
-
-            class_plaintiff = tr.find("td", class_="plaintiff").find("div", class_="b-container")
-            plaintiff = class_plaintiff.find("span", class_="js-rolloverHtml").find("strong").text
-            # print("plaintiff= ", plaintiff)
-            try:
-                # inn = tr.find("td", class_="plaintiff").find_all("div")[2].get_text()
-                inn_plaintiff = class_plaintiff.find("span", class_="js-rolloverHtml").find_all("div")[0].text.replace(
-                    " ", "").rstrip()
-                # print("inn_plaintiff= ", inn_plaintiff)
-            except Exception as e:
-                pass
-            try:
-                inn_plaintiff = class_plaintiff.find("span", class_="js-rolloverHtml").find_all("div")[0].text.replace(
-                    " ", "").rstrip() + "" + class_plaintiff.find("span", class_="g-highlight").text
-                # print("inn_plaintiff= ", inn_plaintiff)
-            except Exception as e:
-                pass
-
-            class_respondent = tr.find("td", class_="respondent").find("div", class_="b-container")
-            try:
-                respondent = class_respondent.find("span", class_="js-rolloverHtml").find("strong").text
-                # print("respondent= ", respondent)
-            except Exception as e:
-                pass
-            try:
-                inn_respondent = class_respondent.find("span", class_="js-rolloverHtml").find_all("div")[
-                    0].text.replace(" ", "").rstrip()
-                # print("inn_respondent= ", inn_respondent)
-            except Exception as e:
-                pass
-        if i == -1:
-            print("Найдено ", cnt, " (всего)")
-        elif i == 0:
-            print("Найдено ", cnt, " (истец)")
-        elif i == 1:
-            print("Найдено ", cnt, " (ответчик)")
-        elif i == 2:
-            print("Найдено ", cnt, " (третье лицо)")
-        elif i == 3:
-            print("Найдено ", cnt, " (иное лицо)")
 
 
 def fedresurs(inn):
@@ -276,7 +102,7 @@ def kadarbitr_1(inn):
     ans = None
     th_l = None
     other_l = None
-    for i in range(-1, 3):
+    for i in range(-1, 4):
         payload = json.dumps({
             "Page": 1,
             "Count": 25,
@@ -322,23 +148,370 @@ def kadarbitr_1(inn):
             # print("Найдено ", cnt, " (третье лицо)")
         elif i == 3:
             other_l = cnt
-            # print("Найдено ", cnt, " (иное лицо)")
+            print("Найдено ", cnt, " (иное лицо)")
     return total, ist, ans, th_l, other_l
 
 
-if __name__ == '__main__':
-    #fedresurs("7728168971")
-    #print(kadarbitr_1("7728168971"))
-    # pprint(PROZR_B("7713398595"))
+# session = requests.Session()
+
+
+def PB_addr(addr):
+    data = {
+        "page": "1",
+        "pageSize": "10",
+        "pbCaptchaToken": "",
+        "token": "",
+        "mode": "search-addr",
+        "queryAll": addr,
+        "queryUl": "",
+        "okvedUl": "",
+        "statusUl": "",
+        "regionUl": "",
+        "isMspUl": "",
+        "mspUl1": "1",
+        "mspUl2": "2",
+        "mspUl3": "3",
+        "queryIp": "",
+        "okvedIp": "",
+        "statusIp": "",
+        "regionIp": "",
+        "isMspIp": "",
+        "mspIp1": "1",
+        "mspIp2": "2",
+        "mspIp3": "3",
+        "queryUpr": "",
+        "uprType1": "1",
+        "uprType0": "1",
+        "queryRdl": "",
+        "dateRdl": "",
+        "queryAddr": addr,
+        "regionAddr": "",
+        "queryOgr": "",
+        "ogrFl": "1",
+        "ogrUl": "1",
+        "npTypeDoc": "1",
+        "ogrnUlDoc": "",
+        "ogrnIpDoc": "",
+        "nameUlDoc": "",
+        "nameIpDoc": "",
+        "formUlDoc": "",
+        "formIpDoc": "",
+        "ifnsDoc": "",
+        "dateFromDoc": "",
+        "dateToDoc": ""}
+
+    url = "https://pb.nalog.ru/search-proc.json"
+    result = requests.post(url, data=data).text
+    json_res = json.loads(result)
+    try:
+        num = json_res['addr']['data'][0]['masscnt']
+        print("Количество организаций ", num)
+    except Exception as e:
+        print("немассадр")
+
+
+def PB_neskolko_UL(inn):
+    data = {
+        "page": "1",
+        "pageSize": "10",
+        "pbCaptchaToken": "",
+        "token": "",
+        "mode": "search-upr-uchr",
+        "queryAll": inn,
+        "queryUl": "",
+        "okvedUl": "",
+        "statusUl": "",
+        "regionUl": "",
+        "isMspUl": "",
+        "mspUl1": "1",
+        "mspUl2": "2",
+        "mspUl3": "3",
+        "queryIp": "",
+        "okvedIp": "",
+        "statusIp": "",
+        "regionIp": "",
+        "isMspIp": "",
+        "mspIp1": "1",
+        "mspIp2": "2",
+        "mspIp3": "3",
+        "queryUpr": inn,
+        "uprType1": "1",
+        "uprType0": "1",
+        "queryRdl": "",
+        "dateRdl": "",
+        "queryAddr": "",
+        "regionAddr": "",
+        "queryOgr": "",
+        "ogrFl": "1",
+        "ogrUl": "1",
+        "npTypeDoc": "1",
+        "ogrnUlDoc": "",
+        "ogrnIpDoc": "",
+        "nameUlDoc": "",
+        "nameIpDoc": "",
+        "formUlDoc": "",
+        "formIpDoc": "",
+        "ifnsDoc": "",
+        "dateFromDoc": "",
+        "dateToDoc": ""
+    }
+
+    url = "https://pb.nalog.ru/search-proc.json"
+    result = requests.post(url, data=data).text
+    json_res = json.loads(result)
+    try:
+        name = json_res['uchr']['data'][0]['fl_fullname']
+        num = json_res['uchr']['data'][0]['ul_cnt']
+        print("ФИО учредителя ", name)
+        print("Количество организаций ", num)
+    except:
+        pass
+    try:
+        name = json_res['upr']['data'][0]['fl_fullname']
+        num = json_res['upr']['data'][0]['ul_cnt']
+        print("ФИО руководителя ", name)
+        print("Количество организаций ", num)
+    except:
+        print("не является")
+
+
+def PB_diskvalif(fio):
+    data = {
+        "page": "1",
+        "pageSize": "10",
+        "pbCaptchaToken": "",
+        "token": "",
+        "mode": "search-rdl",
+        "queryAll": fio,
+        "queryUl": "",
+        "okvedUl": "",
+        "statusUl": "",
+        "regionUl": "",
+        "isMspUl": "",
+        "mspUl1": "1",
+        "mspUl2": "2",
+        "mspUl3": "3",
+        "queryIp": "",
+        "okvedIp": "",
+        "statusIp": "",
+        "regionIp": "",
+        "isMspIp": "",
+        "mspIp1": "1",
+        "mspIp2": "2",
+        "mspIp3": "3",
+        "queryUpr": "",
+        "uprType1": "1",
+        "uprType0": "1",
+        "queryRdl": fio,
+        "dateRdl": "",
+        "queryAddr": "",
+        "regionAddr": "",
+        "queryOgr": "",
+        "ogrFl": "1",
+        "ogrUl": "1",
+        "npTypeDoc": "1",
+        "ogrnUlDoc": "",
+        "ogrnIpDoc": "",
+        "nameUlDoc": "",
+        "nameIpDoc": "",
+        "formUlDoc": "",
+        "formIpDoc": "",
+        "ifnsDoc": "",
+        "dateFromDoc": "",
+        "dateToDoc": ""
+    }
+
+    url = "https://pb.nalog.ru/search-proc.json"
+    result = requests.post(url, data=data).text
+    json_res = json.loads(result)
+    try:
+        name = json_res['rdl']['data'][0]['fl_fullname']
+        num = json_res['uchr']['data'][0]['ul_cnt']
+        print("ФИО учредителя ", name)
+        print("Количество организаций ", num)
+
+    except:
+        print("не является")
+
+
+def PB_ip(inn):
+    data = {
+        "page": "1",
+        "pageSize": "10",
+        "pbCaptchaToken": "",
+        "token": "",
+        "mode": "search-ip",
+        "queryAll": inn,
+        "queryUl": "",
+        "okvedUl": "",
+        "statusUl": "",
+        "regionUl": "",
+        "isMspUl": "",
+        "mspUl1": "1",
+        "mspUl2": "2",
+        "mspUl3": "3",
+        "queryIp": inn,
+        "okvedIp": "",
+        "statusIp": "",
+        "regionIp": "",
+        "isMspIp": "",
+        "mspIp1": "1",
+        "mspIp2": "2",
+        "mspIp3": "3",
+        "queryUpr": "",
+        "uprType1": "1",
+        "uprType0": "1",
+        "queryRdl": "",
+        "dateRdl": "",
+        "queryAddr": "",
+        "regionAddr": "",
+        "queryOgr": "",
+        "ogrFl": "1",
+        "ogrUl": "1",
+        "npTypeDoc": "1",
+        "ogrnUlDoc": "",
+        "ogrnIpDoc": "",
+        "nameUlDoc": "",
+        "nameIpDoc": "",
+        "formUlDoc": "",
+        "formIpDoc": "",
+        "ifnsDoc": "",
+        "dateFromDoc": "",
+        "dateToDoc": ""
+    }
+    url = "https://pb.nalog.ru/search-proc.json"
+    result = session.post(url, data=data).text
+    json_res = json.loads(result)
+    # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
+    # print("======================================================")
+    try:
+        token = json_res['ip']['data'][0]['token']
+        url = "https://pb.nalog.ru/company-proc.json"
+        payload = {'token': token, 'method': 'get-request'}
+        files = []
+        headers = {
+            'Cookie': 'JSESSIONID=71D5F26B08127DA75DE2BE6EB401C84F'
+        }
+        time.sleep(1)
+        response = requests.request("POST", url, headers=headers, data=payload, files=files)
+        json_res = json.loads(response.text)
+        id = json_res['id']
+        token = json_res['token']
+        data = {
+            "id": id,
+            "token": token,
+            "method": "get-response"
+        }
+        time.sleep(1)
+        result = requests.post(url, data=data).text
+        json_res = json.loads(result)
+        print(json.dumps(json_res, ensure_ascii=False, indent=4))
+    except Exception as e:
+        print("не найдено")
+        print(e)
+
+
+def PB_ul(inn):
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
-    # print(kadarbitr_1("7728168971"))
-    a = PROZR_B("7713398595")
-    print("------------------")
-    # b = prozr(a).get("vyp").get("СумКап")
-    b = prozr(a)
-    pprint(b)
-    #time.sleep(1)
-    # deyat = a.get("ul").get("data")[0].get("okved2name")
-    # check_EGRUL("143400305674")
-    # print(kadarbitr("7728168971"))
+    data = {
+        "page": "1",
+        "pageSize": "10",
+        "pbCaptchaToken": "",
+        "token": "",
+        "mode": "search-ul",
+        "queryAll": inn,
+        "queryUl": inn,
+        "okvedUl": "",
+        "statusUl": "",
+        "regionUl": "",
+        "isMspUl": "",
+        "mspUl1": "1",
+        "mspUl2": "2",
+        "mspUl3": "3",
+        "queryIp": "",
+        "okvedIp": "",
+        "statusIp": "",
+        "regionIp": "",
+        "isMspIp": "",
+        "mspIp1": "1",
+        "mspIp2": "2",
+        "mspIp3": "3",
+        "queryUpr": "",
+        "uprType1": "1",
+        "uprType0": "1",
+        "queryRdl": "",
+        "dateRdl": "",
+        "queryAddr": "",
+        "regionAddr": "",
+        "queryOgr": "",
+        "ogrFl": "1",
+        "ogrUl": "1",
+        "npTypeDoc": "1",
+        "ogrnUlDoc": "",
+        "ogrnIpDoc": "",
+        "nameUlDoc": "",
+        "nameIpDoc": "",
+        "formUlDoc": "",
+        "formIpDoc": "",
+        "ifnsDoc": "",
+        "dateFromDoc": "",
+        "dateToDoc": ""
+    }
+    url = "https://pb.nalog.ru/search-proc.json"
+    result = requests.post(url, data=data).text
+    json_res = json.loads(result)
+    # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
+    # print("======================================================")
+    try:
+        token = json_res['ul']['data'][0]['token']
+        url = "https://pb.nalog.ru/company-proc.json"
+        payload = {'token': token, 'method': 'get-request'}
+        files = []
+        headers = {
+            'Cookie': 'JSESSIONID=71D5F26B08127DA75DE2BE6EB401C84F'
+        }
+        time.sleep(1)
+        response = requests.request("POST", url, headers=headers, data=payload, files=files)
+        json_res = json.loads(response.text)
+        id = json_res['id']
+        token = json_res['token']
+        data = {
+            "id": id,
+            "token": token,
+            "method": "get-response"
+        }
+        time.sleep(1)
+        result = requests.post(url, data=data).text
+        json_res = json.loads(result)
+        return json_res
+        # return json.dumps(json_res, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print("не найдено")
+        print(e)
+
+
+if __name__ == '__main__':
+    # PB_addr('Адыгея Респ,,Майкоп г,,Краснооктябрьская ул,21,,')
+    PB_neskolko_UL('221100996554')
+    # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
+    # PB_ip('026413007072')
+    #pprint(PB_ul('0104009400'))
+    # kadarbitr_1("7728168971")
+# if __name__ == '__main__':
+#     print(kadarbitr_1("7728168971"))
+#     #fedresurs("7728168971")
+#     #print(kadarbitr_1("7728168971"))
+#     # pprint(PROZR_B("7713398595"))
+#     # socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
+#     # socket.socket = socks.socksocket
+#     # print(kadarbitr_1("7728168971"))
+#     # a = PROZR_B("7713398595")
+#     # print("------------------")
+#     # b = prozr(a).get("vyp").get("СумКап")
+#     # b = prozr(a)
+#     # pprint(b)
+#     #time.sleep(1)
+#     # deyat = a.get("ul").get("data")[0].get("okved2name")
+#     # check_EGRUL("143400305674")
+#     # print(kadarbitr("7728168971"))

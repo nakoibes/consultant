@@ -171,14 +171,32 @@ input[type=text] {
 }
 
 div.main {
+    /*display: flex;*/
     margin-left: 5%;
     margin-right: 5%;
-    background-color: Snow;
     /*padding: 10px 10px 10px 10px;*/
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     /*padding-top: 10px;*/
     margin-top: 10px;
     height: 100%;
+}
+
+div.main_ {
+    display: flex;
+}
+
+div.main_left {
+    padding-left: 1%;
+    background-color: Snow;
+    width: 70%;
+    /*border: 1px dotted gray;*/
+}
+
+div.main_right {
+    background-color: LightCoral;
+    width: 30%;
+    /*display: block;*/
+    /*border: 1px dotted gray;*/
 }
 
 div.main_first {
@@ -202,21 +220,49 @@ div.main_second_left {
     /*padding-top: 10px;*/
 }
 
+div.main_second_right {
+    width: 50%;
+    /*display: flex;*/
+    line-height: 1.5;
+    /*margin-top: 2%;*/
+    /*padding-top: 10px;*/
+}
+
 div.main_second_left_first {
     display: flex;
     /*align-items: center;*/
     /*align-content: center;*/
     /*align-content: center;*/
 }
+
 div.main_second_left_second {
     display: flex;
     /*align-items: center;*/
     /*align-content: center;*/
     /*align-content: center;*/
 }
+
 span.one {
     /*align-content: center;*/
     line-height: 1.5;
     width: 50%;
     text-align: center;
+}
+
+div.main_second_third {
+    line-height: 2;
+    /*margin-top: 2%;*/
+    padding-top: 10px;
+}
+
+div.title {
+    text-align: center;
+}
+
+div.other_info {
+
+    padding-top: 1%;
+    padding-left: 1%;
+    margin-top: 10px;
+    background-color: Snow;
 }
