@@ -14,7 +14,7 @@ body {
     font-size: 15px;
     line-height: 1.42857143;
     color: #333;
-    background-color: Cornsilk;
+    /*background-color: Cornsilk;*/
     height: 100%;
 }
 
@@ -23,9 +23,9 @@ a {
     font-weight: 600;
 }
 
-/*a:hover {*/
-/*    text-decoration: underline;*/
-/*}*/
+a:hover {
+    text-decoration: underline;
+}
 
 a img {
     border: 0;
@@ -90,80 +90,6 @@ select {
     font-size: 125%;
 }
 
-div.header {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    display: flex;
-    height: 100%;
-    margin-top: 2%;
-    /*margin-bottom: 5%;*/
-    margin-left: 5%;
-    margin-right: 5%;
-    /*border: 1px dotted gray;*/
-    /*padding: 10px 10px 10px 10px;*/
-}
-
-span.header_name {
-    font-size: large;
-    background-color: Gainsboro;
-    /*margin-top: 2%;*/
-    /*margin-bottom: 5%;*/
-    /*margin-left:      0;*/
-    /*margin-right: 10%;*/
-    width: 25%;
-    /*height: 50px;*/
-    /*border: 1px dotted gray;*/
-    /*padding: 40px 10px 10px 30px;*/
-    padding: 10px 10px 10px 10px;
-    padding-top: 15px;
-    /*align-content: center;*/
-    /*align-items: center*/
-}
-
-span.search_field {
-    font-family: Verdana, Geneva, Arial, sans-serif;
-    /*font-size: medium;*/
-    background-color: LightGray;
-    /*margin-top:       2%;*/
-    /*margin-bottom: 5%;*/
-    /*margin-left: 0;*/
-    /*margin-right: 10%;*/
-    /*border: 1px dotted gray;*/
-    width: 55%;
-    padding: 10px 10px 10px 10px;
-    /*padding-bottom: 5%;*/
-    /*position:absolute;*/
-    /*left: auto;*/
-    /*height: 100px;*/
-}
-
-
-span.menu {
-    /*font-size: medium;*/
-    background-color: Silver;
-    /*margin-top:       2%;*/
-    /*margin-bottom: 5%;*/
-    /*margin-left: 30%;*/
-    /*margin-right: 10%;*/
-    /*border: 1px dotted gray;*/
-    /*padding: 10px 10px 10px 10px;*/
-    width: 10%;
-    left: 100px;
-
-}
-
-span.otch {
-    /*font-size: medium;*/
-    background-color: Grey;
-    /*margin-top:       2%;*/
-    /*margin-bottom: 5%;*/
-    /*margin-left: 30%;*/
-    /*margin-right: 10%;*/
-    /*border: 1px dotted gray;*/
-    /*padding: 10px 10px 10px 10px;*/
-    width: 10%;
-    left: 100px;
-
-}
 
 input[type=text] {
     font-size: 115%;
@@ -171,7 +97,7 @@ input[type=text] {
 }
 
 div.main {
-    margin-left: 5%;
+    /*margin-left: 5%;*/
     margin-right: 5%;
     margin-top: 10px;
     height: 100%;
@@ -220,16 +146,10 @@ a:active {
 /*}*/
 div.main_left {
     padding-left: 1%;
-    background-color: Snow;
+    /*background-color: Snow;*/
     width: 70%;
 }
 
-div.main_right {
-    background-color: Gainsboro;
-    /*text-align: center;*/
-    border: 3px solid black;
-    width: 30%;
-}
 
 div.main_first {
     line-height: 1.5;
@@ -281,7 +201,7 @@ div.other_info {
     padding-top: 1%;
     padding-left: 1%;
     margin-top: 10px;
-    background-color: Snow;
+    /*background-color: Snow;*/
 }
 div.color_red
 {

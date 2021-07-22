@@ -57,14 +57,15 @@ def check_IP(guery, date):
 
 
 def fedresurs(inn):
-    '''REGINA'''
     url = "https://fedresurs.ru/"
     options = Options()
     options.add_argument("--start-maximized")
     options.add_argument('--ignore-certificate-errors')
     options.add_argument("--disable-gpu")
     options.add_argument("--headless")
-    driver = webdriver.Firefox(executable_path="/home/nakoibes/Рабочий стол/geckodriver", options=options)
+    driver = webdriver.Firefox(
+        executable_path="/home/nakoibes/Рабочий стол/geckodriver",
+        options=options)
     driver.get(url)
     time.sleep(0.5)
     driver.find_element_by_css_selector(
@@ -88,8 +89,68 @@ def fedresurs(inn):
     driver.get(href)
     time.sleep(0.5)
     find_deals = BeautifulSoup(driver.page_source, "html.parser").find(class_='info')
-    print(find_deals)
+    pprint(find_deals)
+
+    # print(find_deals)
+    contacts = []
+    '''сайты и почта'''
+    for li in find_deals.findAll("li"):
+        contacts.append(li.find("a").get_text())
+
+    dir_inn = []
+    '''руководитель'''
+    for tr in find_deals.find("company-individual-executive-body-info").find("tbody").findAll("tr"):
+        try:
+            dir_inn.append(tr.find(class_="field-value").get_text())
+            # print(tr.find("p").get_text())
+        except:
+            pass
+
+    bankrupt = []
+    '''дела о банкротстве'''
+    try:
+        for tr in find_deals.find("div", class_="info_table bankrot_case").find("tbody").findAll("tr"):
+            try:
+                bankrupt.append(tr.find("p").get_text())
+                # print(tr.find("p").get_text())
+            except:
+                pass
+    except:
+        pass
+    predes = []
+    '''правопредшественники'''
+    try:
+        for tr in find_deals.find("predecessor-company-info").find("tbody").findAll("tr"):
+            try:
+                for td in tr.findAll("td"):
+                    try:
+                        predes.append(td.get_text())
+                        # print(td.get_text())
+                    except:
+                        pass
+            except:
+                pass
+    except:
+        pass
+
+    successors = []
+    '''правопреемники'''
+    try:
+        for tr in find_deals.find("assignieres-company-info").find("tbody").findAll("tr"):
+            try:
+                for td in tr.findAll("td"):
+                    try:
+                        successors.append(td.get_text())
+                        # print(td.get_text())
+                    except:
+                        pass
+            except:
+                pass
+    except:
+        pass
     driver.close()
+    return contacts, dir_inn, bankrupt, predes, successors
+    # time.sleep(200)7706148097
 
 
 def kadarbitr_1(inn):
@@ -148,7 +209,7 @@ def kadarbitr_1(inn):
             # print("Найдено ", cnt, " (третье лицо)")
         elif i == 3:
             other_l = cnt
-            print("Найдено ", cnt, " (иное лицо)")
+            # print("Найдено ", cnt, " (иное лицо)")
     return total, ist, ans, th_l, other_l
 
 
@@ -474,7 +535,7 @@ def PB_ul(inn):
         payload = {'token': token, 'method': 'get-request'}
         files = []
         headers = {
-            'Cookie': 'JSESSIONID=71D5F26B08127DA75DE2BE6EB401C84F'
+            'Cookie': 'JSESSIONID=FFF742E0BCFEFF2A0CCCB9CB85D736C4'
         }
         time.sleep(1)
         response = requests.request("POST", url, headers=headers, data=payload, files=files)
@@ -486,7 +547,7 @@ def PB_ul(inn):
             "token": token,
             "method": "get-response"
         }
-        time.sleep(1)
+        time.sleep(0.5)
         result = requests.post(url, data=data).text
         json_res = json.loads(result)
         return json_res
@@ -497,15 +558,24 @@ def PB_ul(inn):
 
 
 if __name__ == '__main__':
+    pass
     # PB_addr('Адыгея Респ,,Майкоп г,,Краснооктябрьская ул,21,,')
-    PB_neskolko_UL('221100996554')
+    # PB_neskolko_UL('221100996554')
     # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
     # PB_ip('026413007072')
-    #pprint(PB_ul('0104009400'))
-    # kadarbitr_1("7728168971")
-# if __name__ == '__main__':
-#     print(kadarbitr_1("7728168971"))
-#     #fedresurs("7728168971")
+    # pprint(PB_ul('7713398595'))
+    # kadabitr_1("7728168971")
+    # if __name__ == '__main__':
+    #     print(kadarbitr_1("7728168971"))
+
+    # a = fedresurs("7731347089")
+    # pprint(a)
+    # inn = a[1]
+
+    # pprint(PB_diskvalif("910226990921"))
+    # pprint(PB_neskolko_UL("910226990921"))
+    #pprint(check_IP(inn, "2021-07-04"))
+
 #     #print(kadarbitr_1("7728168971"))
 #     # pprint(PROZR_B("7713398595"))
 #     # socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
@@ -518,5 +588,5 @@ if __name__ == '__main__':
 #     # pprint(b)
 #     #time.sleep(1)
 #     # deyat = a.get("ul").get("data")[0].get("okved2name")
-#     # check_EGRUL("143400305674")
+# print(check_EGRUL("7713398595"))
 #     # print(kadarbitr("7728168971"))

@@ -1,14 +1,10 @@
 import locale
 from datetime import datetime
 from pprint import pprint
-import socks
-import socket
-import requests as requests
-from threading import Thread
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from application.functions import check_EGRUL, check_IP, kadarbitr_1, PB_ul
-
-key = "466c09ea169672bed651f6a4a9a90d1f73a4ad73"
 
 
 class IPSearcher:
@@ -40,67 +36,113 @@ class ULSearcher:
     def handle(self):
         locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
         result_dict = dict()
+        try:
+            with ThreadPoolExecutor(max_workers=5) as pool:
+                pb_res = pool.submit(PB_ul, self.inn)
+                kadr_res = pool.submit(kadarbitr_1, self.inn)
+                court_total, court_ist, court_ans, court_th_l, court_other = kadr_res.result()
+                pb = pb_res.result()
+        except:
+            print("thread error")
+
         raw_eg = check_EGRUL(self.inn)
 
-        pb = PB_ul(self.inn)
-        # pb = mock(self.inn)
-        # print(pb)
+        # pb = PB_ul(self.inn)
         if pb:
             status = "Действующая" if not pb.get("vyp").get("НаимСтатусЮЛСокр") else pb.get("vyp").get(
                 "НаимСтатусЮЛСокр")
             kapital = pb.get("vyp").get("СумКап")
 
-            date_reg = pb.get("vyp").get("ДатаРег")
+            date_reg = pb.get("vyp").get("ДатаРег") or pb.get("vyp").get("ДатаОГРН")
             time_delta = None
             if date_reg:
-                time_delta = (datetime.date(datetime.today()) - datetime.strptime(date_reg,
-                                                                                  '%Y-%m-%d').date()).days // 365
+                time_delta = ((datetime.date(datetime.today()) - datetime.strptime(date_reg,
+                                                                                   '%Y-%m-%d').date()).days // 365) or 100
                 date_reg = str(datetime.strptime(date_reg, '%Y-%m-%d').date().strftime("%-d %B %Y"))
 
-            masaddress = len(pb.get("masaddress"))
-            #print(masaddress)
-            taxmode = "Специальный налоговый режим не применяется" if pb.get("vyp").get(
-                "hastaxmode") == 0.0 else "Применяется специальный налоговый режим"
-            msp = "Не является субъектом МСП" if pb.get("vyp").get("rsmpcategory") == 0.0 else "Является субъектом МСП"
-            # print(pb.get("is_p_offense") is False)
-            nalog_offense = f"есть нарушения (общая сумма штрафов- {str(calculate_offense_sum(pb.get('offense')))}руб.)" if pb.get(
+            deyat = pb.get("vyp").get("НаимОКВЭД")
+
+            masaddress = len(pb.get("masaddress", ''))
+            mas_count = masaddress
+            if masaddress == 0:
+                masaddress = "Не является адресом массовой регистрации"
+            else:
+                masaddress = "Организации зарегистрировано по этому адресу" + str(masaddress)
+
+            kod_deyat = pb.get("vyp").get("КодОКВЭД")
+
+            taxmodes = []
+            if pb.get("vyp").get("hastaxmode"):
+                for item in pb.get("taxmode"):
+                    if item.get("usn") == 1.0 and item.get("yearcode") == 2019.0:
+                        taxmodes.append("Упрощенная система налогообложения")
+                    elif item.get("envd") == 1.0 and item.get("yearcode") == 2019.0:
+                        taxmodes.append("Единый налог на вменённый доход")
+                    elif item.get("eshn") == 1.0 and item.get("yearcode") == 2019.0:
+                        taxmodes.append("Единый сельскохозяйственный налог")
+                    elif item.get("srp") == 1.0 and item.get("yearcode") == 2019.0:
+                        taxmodes.append("соглашение о разделе продукции")
+            else:
+                taxmodes.append("Специальный налоговый режим не применяется")
+
+            if pb.get("vyp").get("rsmpcategory") == 2.0:
+                msp = "Малое предприятие"
+            elif pb.get("vyp").get("rsmpcategory") == 1.0:
+                msp = "Микропредприятие"
+            elif pb.get("vyp").get("rsmpcategory") == 0.0:
+                msp = "Не является субъектом МСП"
+            else:
+                msp = "Среднее предприятие"
+            if pb.get('offense'):
+                nalog_offense_sum = calculate_offense_sum(pb.get('offense'))
+            else:
+                nalog_offense_sum = 0
+            nalog_offense = f"есть нарушения (общая сумма штрафов- {str(nalog_offense_sum)}руб.)" if pb.get(
                 "is_p_offense") else "Сведения отсутствуют"
+
             if kapital:
                 kapital = '{:,}'.format(int(kapital)) + " руб"
+
             if pb.get("vyp").get("pr_zd") == 1.0:
                 nalog_debt = "Имеет задолженности"
             elif pb.get("vyp").get("pr_zd") == 0.0:
                 nalog_debt = "Не имеет задолженность"
             else:
                 nalog_debt = None
+
             if pb.get("vyp").get("is_protch_przd") == 1.0:
-                nalog_info = "Представляет налоговую отчетность"
+                nalog_info = "Предоставляет налоговую отчетность"
             elif pb.get("vyp").get("is_protch_przd") == 0.0:
-                nalog_info = "Не представляет налоговую отчетность"
+                nalog_info = "Не предоставляет налоговую отчетность"
             else:
                 nalog_info = None
+
             fine_sum = pb.get("vyp").get("totalarrearsum")
             if fine_sum:
                 fine_sum = '{:,}'.format(int(fine_sum)) + " руб"
+
             result_dict.update(
                 {"kapital": kapital,
                  "masaddress": masaddress,
                  "msp": msp,
                  "nalog_debt": nalog_debt,
                  "status": status,
-                 "nalog_offense":nalog_offense,
-                 "taxmode": taxmode,
+                 "nalog_offense_sum": nalog_offense_sum,
+                 "mas_count": mas_count,
+                 "kod_deyat": kod_deyat,
+                 "nalog_offense": nalog_offense,
+                 "taxmodes": taxmodes,
                  "fine_sum": fine_sum,
                  "nalog_info": nalog_info,
                  "date_reg": date_reg,
+                 "deyat": deyat,
                  "time_delta": time_delta})
 
             # court_total, court_ist, court_ans, court_th_l, court_other = kadarbitr_1(self.inn)
-            # #Thread(target=kadarbitr_1, args=(self.inn)).start()
-            # #court_other = int(court_total) - int(court_ist) - int(court_ans) - int(court_th_l)
-            # result_dict.update(
-            #     {"court_total": court_total, "court_ist": court_ist, "court_ans": court_ans, "court_th_l": court_th_l,
-            #      "court_other": court_other})
+            # court_other = int(court_total) - int(court_ist) - int(court_ans) - int(court_th_l)
+            result_dict.update(
+                {"court_total": court_total, "court_ist": court_ist, "court_ans": court_ans, "court_th_l": court_th_l,
+                 "court_other": court_other})
 
             # r = requests.get(f"https://api-fns.ru/api/egr?req={self.inn}&key={key}", )
             # if r:
@@ -120,16 +162,6 @@ class ULSearcher:
             #     stop_date = r1.json().get("items")[0].get("ЮЛ").get("ДатаПрекр")
             #     result_dict.update({"stop_date": stop_date})
 
-            # try:
-            #     raw_biz_1 = PROZR_B("7713398595")
-            #     raw_biz_2 = prozr(raw_biz_1)
-            #     deyat = raw_biz_1.get("ul").get("data")[0].get("okved2name")
-            #     raw_biz_2 = prozr(raw_biz_1)
-            #     kapital = raw_biz_2.get("vyp").get("СумКап")
-            #     result_dict.update({"deyat": deyat, "kapital": kapital})
-            # except:
-            #     pass
-
             if raw_eg.get("rows"):
                 address = raw_eg.get("rows")[0].get("a")
             name = raw_eg.get("rows")[0].get("c")
@@ -139,6 +171,7 @@ class ULSearcher:
             ogrn = raw_eg.get("rows")[0].get("o")
             kpp = raw_eg.get("rows")[0].get("p")
             ogrn_date = raw_eg.get("rows")[0].get("r")
+
             result_dict.update(
                 {"date": datetime.today().strftime("%-d %B %Y"), "type": "Юридическое лицо", "addr": address,
                  "name": name,
@@ -157,11 +190,38 @@ def calculate_offense_sum(array):
     return res
 
 
+def analyze(map):
+    res_map = {}
+    status = map.get("status")
+    time_delta = map.get("time_delta")
+    nalog_debt = map.get("nalog_debt")
+    nalog_info = map.get("nalog_info")
+    fine_sum = map.get("fine_sum")
+    mas_count = map.get("mas_count")
+    nalog_offense_sum = map.get("nalog_offense_sum")
+    if status != "Действующая":
+        res_map.update({"status": status})
+    if time_delta and time_delta < 3:
+        res_map.update({"time_delta": time_delta})
+    if nalog_debt != "Не имеет задолженность":
+        res_map.update({"nalog_debt": nalog_debt})
+    if nalog_info != "Предоставляет налоговую отчетность":
+        res_map.update({"nalog_info": nalog_info})
+    if mas_count and mas_count > 2:
+        res_map.update({"mas_count": mas_count})
+    if nalog_offense_sum and nalog_offense_sum > 0:
+        res_map.update({"nalog_offense": map.get("nalog_offense")})
+    if fine_sum :
+        res_map.update({"fine_sum": map.get("fine_sum")})
+    return res_map
+
+
 if __name__ == '__main__':
     pass
     # pprint(check_EGRUL("7713398595"))
-    # s = ULSearcher("7713398595")
-    # result = s.handle()
+    s = ULSearcher("7713398595")
+    result = s.handle()
+    print(result)
     # a = PROZR_B("7713398595")
     # print(a)
     # r1 = requests.get(f"https://api-fns.ru/api/egr?req=7713398595&key={key}", )
