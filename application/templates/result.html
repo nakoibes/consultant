@@ -16,20 +16,15 @@
 
         <div class="main_second">
             <div class="main_second_left">
-                <div class="main_second_left_first">
-                    <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
-                    <span class="one"><b>ИНН/КПП:</b><br> {{data.inn}}/{{data.kpp}}</span>
-                </div>
+
                 <div class="main_second_left_second">
                     {% if data.date_reg%}
                     <span class="one"><b>Дата регистрации:</b><br> {{data.date_reg}}<br>
+                    {%if data.time_delta%}
                     Компания существует в течение {{data.time_delta}} лет</span>
                     {%endif%}
-                    <span class="one">
-                    {% if data.kapital%}
-                    <b>Уставный капитал:</b><br> {{data.kapital}}
                     {%endif%}
-                </span>
+
                 </div>
                 <div class="main_second_third">
                     {%if data.director%}
@@ -38,12 +33,9 @@
                     {% if data.addr%}
 
                     <b>Адрес:</b><br> {{data.addr}}<br><br>
-                    {% if data.masaddress%}
-                    <b>Адрес массовой регистрации:</b><br> {{ data.masaddress}}<br><br>
+
                     {%endif%}
-                    {%endif%}
-                    <br>
-                    <b>Контакты: </b>
+
                 </div>
             </div>
 
@@ -61,65 +53,92 @@
                     <b>Субъект МСП:</b><br> {{data.msp}}
                 </div>
                 {%endif%}
+                <div class="kapital">
+                <span class="one">
+                    {% if data.kapital%}
+                    <b>Уставный капитал:</b><br> {{data.kapital}}
+                    {%endif%}
+                    <br><br>
+                </span>
+                </div>
             </div>
         </div>
 
     </div>
     <div class="main_right">
-        <div class="title"><b>Сведения, требующие внимания:</b></div>
-        <br>
-        {%if not warn%}
-        <div>Сведений, требующих внимания нет</div>
-        {%endif%}
-        {%if warn.status %}
-        <b>Статус:</b>
-        <div class="color_red">{{warn.status}}</div>
-        <br>
-        {%endif%}
+        <div class="main_right_first">
+            <div class="title"><b>Сведения, требующие внимания:</b></div>
+            <br>
+            {%if not warn%}
+            <div class="content">Сведений, требующих внимания нет</div>
+            <br>
+            {%endif%}
+            {%if warn.status %}
+            <b>Статус:</b>
+            <div class="color_red">{{warn.status}}</div>
+            <br>
+            {%endif%}
 
-        {%if warn.time_delta %}
-        <div>Компания существует в течение {{warn.time_delta}} лет</div>
-        <br>
-        {%endif%}
+            {%if warn.time_delta %}
+            <div class="content">Компания существует в течение {{warn.time_delta}} лет</div>
+            <br>
+            {%endif%}
 
-        {%if warn.nalog_debt%}
-        <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{warn.nalog_debt}}<br>
-        {%endif%}
+            {%if warn.nalog_debt%}
+            <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{warn.nalog_debt}}<br>
+            {%endif%}
 
-        {%if warn.nalog_info%}
-        <b>Сведения о непредставлении налоговой отчетности: </b><br> {{warn.nalog_info}}<br><br>
-        {%endif%}
+            {%if warn.nalog_info%}
+            <b>Сведения о непредставлении налоговой отчетности: </b><br> {{warn.nalog_info}}<br><br>
+            {%endif%}
 
-        {%if warn.fine_sum%}
-        <b>Сведения о суммах недоимки и задолженности по пеням и штрафам: </b><br> {{warn.fine_sum}}<br><br>
-        {%endif%}
+            {%if warn.fine_sum%}
+            <b>Сведения о суммах недоимки и задолженности по пеням и штрафам за исключением налоговых
+                правонарушений: </b><br> {{warn.fine_sum}}<br><br>
+            {%endif%}
 
-        {%if warn.mas_count%}
-        <b> Адрес массовой регистрации:</b><br> {{warn.mas_count}}<br><br>
-        {%endif%}
+            {%if warn.mas_count%}
+            <b> Адрес массовой регистрации:</b><br> {{warn.mas_count}}<br><br>
+            {%endif%}
 
-        {%if warn.nalog_offense%}
-        <b> Налоговые правонарушения:</b><br> {{warn.nalog_offense}}<br><br>
-        {%endif%}
+            {%if warn.nalog_offense%}
+            <b> Налоговые правонарушения:</b><br> {{warn.nalog_offense}}<br><br>
+            {%endif%}
+        </div>
+        <div class="main_right_second">
+            <div class="title"><b>Реквизиты:</b></div>
+            <br>
+            <div class="main_right_rekv">
+                <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
+                <span class="one"><b>ИНН/КПП:</b><br> {{data.inn}}/{{data.kpp}}</span>
+            </div>
+
+        </div>
     </div>
+
 </div>
 <div class="other_info">
-    {%if data.nalog_debt %}
-    <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{data.nalog_debt}}<br>
-    {%endif%}
-    {%if data.nalog_info%}
-    <b>Сведения о непредставлении налоговой отчетности: </b><br> {{data.nalog_info}}<br>
-    {%endif%}
+    <div class="other_first">{%if data.nalog_debt %}
+        <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{data.nalog_debt}}<br>
+        {%endif%}
+        {%if data.nalog_info%}
+        <b>Сведения о непредставлении налоговой отчетности: </b><br> {{data.nalog_info}}<br>
+        {%endif%}
 
 
-    {% if data.taxmodes%}
-    <b>Специальные налоговые режимы:</b><br>
-    {%for taxmode in data.taxmodes%}
-    {{ taxmode}}<br>
-    {%endfor%}
-    {%endif%}
-    {% if data.court_total%}
-    <div>
+        {% if data.taxmodes%}
+        <b>Специальные налоговые режимы:</b><br>
+        {%for taxmode in data.taxmodes%}
+        {{ taxmode}}<br>
+        {%endfor%}
+        {%endif%}
+        {% if data.court_total%}
+        {% if data.masaddress%}
+        <b>Адрес массовой регистрации:</b><br> {{ data.masaddress}}<br><br>
+        {%endif%}
+    </div>
+
+    <div class="other_second">
         <b>Всего <a href="https://kad.arbitr.ru">судов</a></b> {{ data.court_total}}<br>
         {% if data.court_ist%}
         <b>В качестве истца</b> {{ data.court_ist}}<br>
@@ -133,6 +152,7 @@
         {% if data.court_other%}
         <b>В качестве иного лица</b> {{ data.court_other}}<br>
         {%endif%}
+        <br>
 
 
     </div>

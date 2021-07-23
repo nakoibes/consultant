@@ -1,7 +1,8 @@
 import locale
 from datetime import datetime
 from pprint import pprint
-
+import socks
+import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from application.functions import check_EGRUL, check_IP, kadarbitr_1, PB_ul
@@ -38,6 +39,7 @@ class ULSearcher:
         result_dict = dict()
         try:
             with ThreadPoolExecutor(max_workers=5) as pool:
+
                 pb_res = pool.submit(PB_ul, self.inn)
                 kadr_res = pool.submit(kadarbitr_1, self.inn)
                 court_total, court_ist, court_ans, court_th_l, court_other = kadr_res.result()

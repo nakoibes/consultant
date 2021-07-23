@@ -1,6 +1,7 @@
 import json
 import time
 from pprint import pprint
+
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 
@@ -17,6 +18,19 @@ import json
 import time
 
 
+def checkIP():
+    ip = requests.get('http://checkip.dyndns.org').content
+    soup = BeautifulSoup(ip, 'html.parser')
+    print(soup.find('body').text)
+
+# def getFilename_fromCd(cd):
+#     if not cd:
+#         return None
+#     fname = re.findall('filename=(.+)', cd)
+#     if len(fname) == 0:
+#         return None
+#     return fname[0]
+
 def check_EGRUL(query):
     '''REGINA'''
     data = {
@@ -31,7 +45,9 @@ def check_EGRUL(query):
     url = "https://egrul.nalog.ru/search-result/" + t + "?r=1625573233361&_=1625573233361"
     result = requests.get(url).text
     json_res = json.loads(result)
-    # print(json.dumps(json_res, ensure_ascii=False, indent=4))
+    #t = json_res.get("rows")[0].get("t")
+    url = f'https://egrul.nalog.ru/vyp-download/{t}'
+    #print(url)
     return json_res
     # print(json.dumps(json_res, ensure_ascii=False, indent=4))
     # return json.dumps(json_res, ensure_ascii=False,indent = 4)
@@ -89,7 +105,7 @@ def fedresurs(inn):
     driver.get(href)
     time.sleep(0.5)
     find_deals = BeautifulSoup(driver.page_source, "html.parser").find(class_='info')
-    pprint(find_deals)
+    # pprint(find_deals)
 
     # print(find_deals)
     contacts = []
@@ -109,7 +125,7 @@ def fedresurs(inn):
     bankrupt = []
     '''дела о банкротстве'''
     try:
-        for tr in find_deals.find("div", class_="info_table bankrot_case").find("tbody").findAll("tr"):
+        for tr in find_deals.find("legal-case-list").find("tbody").findAll("tr"):
             try:
                 bankrupt.append(tr.find("p").get_text())
                 # print(tr.find("p").get_text())
@@ -157,6 +173,7 @@ def kadarbitr_1(inn):
     '''REGINA'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
+    checkIP()
     url = "https://kad.arbitr.ru/Kad/SearchInstances"
     total = None
     ist = None
@@ -480,6 +497,7 @@ def PB_ul(inn):
     '''REGINA'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
+    checkIP()
     data = {
         "page": "1",
         "pageSize": "10",
@@ -529,13 +547,14 @@ def PB_ul(inn):
     json_res = json.loads(result)
     # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
     # print("======================================================")
+    #print(json_res)
     try:
         token = json_res['ul']['data'][0]['token']
         url = "https://pb.nalog.ru/company-proc.json"
         payload = {'token': token, 'method': 'get-request'}
         files = []
         headers = {
-            'Cookie': 'JSESSIONID=FFF742E0BCFEFF2A0CCCB9CB85D736C4'
+            'Cookie': 'JSESSIONID=23B4AC723230CC87FFDA3526209481BC'
         }
         time.sleep(1)
         response = requests.request("POST", url, headers=headers, data=payload, files=files)
@@ -547,7 +566,7 @@ def PB_ul(inn):
             "token": token,
             "method": "get-response"
         }
-        time.sleep(0.5)
+        time.sleep(1)
         result = requests.post(url, data=data).text
         json_res = json.loads(result)
         return json_res
@@ -563,21 +582,21 @@ if __name__ == '__main__':
     # PB_neskolko_UL('221100996554')
     # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
     # PB_ip('026413007072')
-    # pprint(PB_ul('7713398595'))
+    pprint(PB_ul('7452001154'))
     # kadabitr_1("7728168971")
     # if __name__ == '__main__':
     #     print(kadarbitr_1("7728168971"))
+    #
+    # a = fedresurs("4401016929")
+# pprint(a)
+# inn = a[1]
 
-    # a = fedresurs("7731347089")
-    # pprint(a)
-    # inn = a[1]
-
-    # pprint(PB_diskvalif("910226990921"))
-    # pprint(PB_neskolko_UL("910226990921"))
-    #pprint(check_IP(inn, "2021-07-04"))
+# pprint(PB_diskvalif("910226990921"))
+# pprint(PB_neskolko_UL("910226990921"))
+# pprint(check_IP(inn, "2021-07-04"))
 
 #     #print(kadarbitr_1("7728168971"))
-#     # pprint(PROZR_B("7713398595"))
+# pprint(PROZR_B("7713398595"))
 #     # socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
 #     # socket.socket = socks.socksocket
 #     # print(kadarbitr_1("7728168971"))
@@ -588,5 +607,5 @@ if __name__ == '__main__':
 #     # pprint(b)
 #     #time.sleep(1)
 #     # deyat = a.get("ul").get("data")[0].get("okved2name")
-# print(check_EGRUL("7713398595"))
+    #pprint(check_EGRUL("7713398595"))
 #     # print(kadarbitr("7728168971"))

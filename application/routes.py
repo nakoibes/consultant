@@ -1,10 +1,13 @@
 import json
 from pprint import pprint
+from bs4 import BeautifulSoup
 from ast import literal_eval
 import pdfkit as pdf
+import requests as requests
+
 from application.app import app, db
 from flask import render_template, redirect, url_for, request, Response, jsonify
-from application.forms import SearchForm, OtchForm
+from application.forms import SearchForm
 from application.service import IPSearcher, ULSearcher, analyze
 
 
@@ -18,7 +21,6 @@ def index():
 
 @app.route("/search/<inn>", methods=["GET", "POST"])
 def search(inn):
-    otchet_form = OtchForm()
     form = SearchForm()
     # if otchet_form.validate_on_submit():
     #     otchet(result)
@@ -37,6 +39,7 @@ def search(inn):
             result = get_from_db(inn)
         if result:
             warn = analyze(result)
+            result = alter(result)
             # print(warn)
             #print(result)
             return render_template("result.html", data=result, form=form, warn=warn)
@@ -73,3 +76,9 @@ def get_from_db(inn):
 
 # def mock(string):
 #     return pdf.from_string(string, False, css="application/static/mystyle.css")
+
+
+def alter(result):
+    if result.get("status") == "Прекратило деятельность":
+        result.pop("time_delta",None)
+    return result

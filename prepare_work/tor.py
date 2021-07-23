@@ -16,4 +16,4 @@ if __name__ == '__main__':
 
     while True:
         checkIP()
-        sleep(5)
+        sleep(1)
