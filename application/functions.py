@@ -1,4 +1,5 @@
 import json
+import re
 import time
 from pprint import pprint
 
@@ -19,9 +20,11 @@ import time
 
 
 def checkIP():
+    '''REGINA'''
     ip = requests.get('http://checkip.dyndns.org').content
     soup = BeautifulSoup(ip, 'html.parser')
     print(soup.find('body').text)
+
 
 # def getFilename_fromCd(cd):
 #     if not cd:
@@ -45,9 +48,9 @@ def check_EGRUL(query):
     url = "https://egrul.nalog.ru/search-result/" + t + "?r=1625573233361&_=1625573233361"
     result = requests.get(url).text
     json_res = json.loads(result)
-    #t = json_res.get("rows")[0].get("t")
+    # t = json_res.get("rows")[0].get("t")
     url = f'https://egrul.nalog.ru/vyp-download/{t}'
-    #print(url)
+    # print(url)
     return json_res
     # print(json.dumps(json_res, ensure_ascii=False, indent=4))
     # return json.dumps(json_res, ensure_ascii=False,indent = 4)
@@ -73,6 +76,7 @@ def check_IP(guery, date):
 
 
 def fedresurs(inn):
+    '''REGINA'''
     url = "https://fedresurs.ru/"
     options = Options()
     options.add_argument("--start-maximized")
@@ -547,7 +551,7 @@ def PB_ul(inn):
     json_res = json.loads(result)
     # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
     # print("======================================================")
-    #print(json_res)
+    # print(json_res)
     try:
         token = json_res['ul']['data'][0]['token']
         url = "https://pb.nalog.ru/company-proc.json"
@@ -576,19 +580,49 @@ def PB_ul(inn):
         print(e)
 
 
+def getFilename_fromCd(cd):
+    if not cd:
+        return None
+    fname = re.findall('filename=(.+)', cd)
+    if len(fname) == 0:
+        return None
+    return fname[0]
+
+
+def EGRUL(query):
+    data = {
+        "vyp3CaptchaToken": "",
+        "page": "",
+        "query": query,
+        "region": "",
+        "PreventChromeAutocomplete": ""
+    }
+    res = json.loads(requests.post("https://egrul.nalog.ru/", data=data).text)
+    t = res['t']
+    url = "https://egrul.nalog.ru/search-result/" + t + "?r=1625573233361&_=1625573233361"
+    result = requests.get(url).text
+    json_res = json.loads(result)
+    # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
+    t = json_res['rows'][0]['t']
+    url = "https://egrul.nalog.ru/vyp-download/" + t
+    r = requests.get(url, allow_redirects=True)
+    filename = getFilename_fromCd(r.headers.get('content-disposition'))
+    open(filename, 'wb').write(r.content)
+
+
 if __name__ == '__main__':
     pass
     # PB_addr('Адыгея Респ,,Майкоп г,,Краснооктябрьская ул,21,,')
     # PB_neskolko_UL('221100996554')
     # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
     # PB_ip('026413007072')
-    pprint(PB_ul('7452001154'))
+    # pprint(PB_ul('7452001154'))
     # kadabitr_1("7728168971")
     # if __name__ == '__main__':
     #     print(kadarbitr_1("7728168971"))
     #
-    # a = fedresurs("4401016929")
-# pprint(a)
+    a = fedresurs("7743698620")
+    pprint(a)
 # inn = a[1]
 
 # pprint(PB_diskvalif("910226990921"))
@@ -607,5 +641,5 @@ if __name__ == '__main__':
 #     # pprint(b)
 #     #time.sleep(1)
 #     # deyat = a.get("ul").get("data")[0].get("okved2name")
-    #pprint(check_EGRUL("7713398595"))
+# pprint(check_EGRUL("7713398595"))
 #     # print(kadarbitr("7728168971"))

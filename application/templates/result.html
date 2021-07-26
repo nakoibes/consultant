@@ -4,6 +4,7 @@
 
 <div class="main_">
     <div class="main_left">
+        <div class="title"><b>Основные сведения</b></div>
         <div class="main_first">
             <div>
                 <b>По состоянию на {{data.date}}</b><br>
@@ -50,7 +51,7 @@
                 {%endif%}
                 {% if data.msp%}
                 <div>
-                    <b>Субъект МСП:</b><br> {{data.msp}}
+                    <b><a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=7834062520084719218501637&cacheid=C3150EE3CB323FFACEDF8D3011B25C12&mode=splus&base=PBI&n=211416&rnd=E50B4A647578E06673D92A12F48A2057#1xkfly123fz">Субъект МСП</a>:</b><br> {{data.msp}}
                 </div>
                 {%endif%}
                 <div class="kapital">
@@ -67,10 +68,10 @@
     </div>
     <div class="main_right">
         <div class="main_right_first">
-            <div class="title"><b>Сведения, требующие внимания:</b></div>
+            <div class="title"><b>Сведения, требующие внимания</b></div>
             <br>
             {%if not warn%}
-            <div class="content">Сведений, требующих внимания нет</div>
+            <div class="content">Сведений, требующих внимания не выявлено</div>
             <br>
             {%endif%}
             {%if warn.status %}
@@ -85,7 +86,7 @@
             {%endif%}
 
             {%if warn.nalog_debt%}
-            <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{warn.nalog_debt}}<br>
+            <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{warn.nalog_debt}}<br><br>
             {%endif%}
 
             {%if warn.nalog_info%}
@@ -98,7 +99,7 @@
             {%endif%}
 
             {%if warn.mas_count%}
-            <b> Адрес массовой регистрации:</b><br> {{warn.mas_count}}<br><br>
+            <b> <a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=125394370306665836248436197&cacheid=D4E3FE0969F90EEC694DE0392973A2A6&mode=splus&base=CJI&n=111826&rnd=E50B4A647578E06673D92A12F48A2057#6dxy2nys2r4">Адрес массовой регистрации</a>:</b><br> {{warn.mas_count}}<br><br>
             {%endif%}
 
             {%if warn.nalog_offense%}
@@ -106,56 +107,60 @@
             {%endif%}
         </div>
         <div class="main_right_second">
-            <div class="title"><b>Реквизиты:</b></div>
+            <div class="title"><b>Реквизиты </b></div>
             <br>
             <div class="main_right_rekv">
-                <span class="one"><b>ОГРН:</b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
-                <span class="one"><b>ИНН/КПП:</b><br> {{data.inn}}/{{data.kpp}}</span>
-            </div>
+                <span class="one"><b><a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=944137907292177746233067&cacheid=0FDBAC27FDD2FE0CC4346BDC1BD72686&mode=splus&base=CJI&n=115379&dst=100039&rnd=69CE2D017279A304D5CFB3510B0AE97E#689lv7bgygk">ОГРН:</a></b><br> {{data.ogrn}}<br> от {{data.ogrn_date}}</span>
+                <span class="one"><b><a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?rnd=E50B4A647578E06673D92A12F48A2057&req=doc&base=PBI&n=134568&REFFIELD=134&REFDST=100017&REFDOC=134824&REFBASE=PBI&stat=refcode%3D10881%3Bindex%3D9#2256ne0fuqi">ИНН</a>/<a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=1664771281008851417874397183&cacheid=FE3D5AD5742DA885D779921C7E5434AE&mode=splus&base=PBI&n=134824&rnd=E50B4A647578E06673D92A12F48A2057#1xu62noq2nw">КПП</a>:</b><br> {{data.inn}}/{{data.kpp}}</span>
 
+            </div>
+            <br>
         </div>
     </div>
 
 </div>
 <div class="other_info">
-    <div class="other_first">{%if data.nalog_debt %}
-        <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{data.nalog_debt}}<br>
-        {%endif%}
-        {%if data.nalog_info%}
-        <b>Сведения о непредставлении налоговой отчетности: </b><br> {{data.nalog_info}}<br>
-        {%endif%}
+    <div class="title"><b>Другая информация</b></div>
+    <div class="other_info_flex">
+        <div class="other_first">{%if data.nalog_debt %}
+            <b>Сведения о превышающей 1000 рублей задолженности по уплате налогов: </b><br> {{data.nalog_debt}}<br>
+            {%endif%}
+            {%if data.nalog_info%}
+            <b>Сведения о непредставлении налоговой отчетности: </b><br> {{data.nalog_info}}<br>
+            {%endif%}
 
 
-        {% if data.taxmodes%}
-        <b>Специальные налоговые режимы:</b><br>
-        {%for taxmode in data.taxmodes%}
-        {{ taxmode}}<br>
-        {%endfor%}
-        {%endif%}
-        {% if data.court_total%}
-        {% if data.masaddress%}
-        <b>Адрес массовой регистрации:</b><br> {{ data.masaddress}}<br><br>
+            {% if data.taxmodes%}
+            <b><a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=540933307036115787754521067&cacheid=9E2FDD26A4B616977FD69D3388B67A7A&mode=splus&base=PBI&n=123245&dst=100003&rnd=E50B4A647578E06673D92A12F48A2057#t351fz8ygd">Специальные налоговые режимы:</a></b><br>
+            {%for taxmode in data.taxmodes%}
+            {{ taxmode}}<br>
+            {%endfor%}
+            {%endif%}
+            {% if data.court_total%}
+            {% if data.masaddress%}
+            <b><a href="https://cloud.consultant.ru/cloud/cgi/online.cgi?req=doc&ts=125394370306665836248436197&cacheid=D4E3FE0969F90EEC694DE0392973A2A6&mode=splus&base=CJI&n=111826&rnd=E50B4A647578E06673D92A12F48A2057#6dxy2nys2r4">Адрес массовой регистрации:</a></b><br> {{ data.masaddress}}<br><br>
+            {%endif%}
+        </div>
+
+        <div class="other_second">
+            <b>Всего <a href="https://kad.arbitr.ru">судов</a></b> {{ data.court_total}}<br>
+            {% if data.court_ist%}
+            <b>В качестве истца</b> {{ data.court_ist}}<br>
+            {%endif%}
+            {% if data.court_ans%}
+            <b>В качестве ответчика</b> {{ data.court_ans}}<br>
+            {%endif%}
+            {% if data.court_th_l%}
+            <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>
+            {%endif%}
+            {% if data.court_other%}
+            <b>В качестве иного лица</b> {{ data.court_other}}<br>
+            {%endif%}
+            <br>
+
+
+        </div>
         {%endif%}
     </div>
-
-    <div class="other_second">
-        <b>Всего <a href="https://kad.arbitr.ru">судов</a></b> {{ data.court_total}}<br>
-        {% if data.court_ist%}
-        <b>В качестве истца</b> {{ data.court_ist}}<br>
-        {%endif%}
-        {% if data.court_ans%}
-        <b>В качестве ответчика</b> {{ data.court_ans}}<br>
-        {%endif%}
-        {% if data.court_th_l%}
-        <b>В качестве третьего лица</b> {{ data.court_th_l}}<br>
-        {%endif%}
-        {% if data.court_other%}
-        <b>В качестве иного лица</b> {{ data.court_other}}<br>
-        {%endif%}
-        <br>
-
-
-    </div>
-    {%endif%}
 </div>
 {% endblock %}

@@ -9,6 +9,9 @@
       href="{{url_for('.static', filename='mystyle.css')}}">
 {% endblock %}
 {% block content %}
+<div class="none_flex_header">
+    <img src="{{url_for('images',path='house.jpeg')}}" width="80" height="80" alt="">
+</div>
 <div class="header">
     <span class="header_name">
         {% if data.name%}
@@ -36,5 +39,21 @@
 <div class="main">
 
     {% block app_content %}{% endblock %}
+<!--</div>-->
+<!--<div class="footer">-->
+<!--    <div class="footer_flex">-->
+<!--        <div class="footer_first">-->
+<!--            О компании<br>Источники данных<br><br>Соцаильные сети-->
+<!--        </div>-->
+<!--        <div class="footer_second">-->
+<!--            Наименование организации<br>Реквизиты компании:<br><br>ИНН:<br>ОГРН:-->
+<!--        </div>-->
+<!--        <div class="footer_third">-->
+<!--            <b>Контакты:</b><br>-->
+<!--            <b>Режим работы:</b><br>-->
+<!--            <b>Телефон:</b><br>-->
+<!--            <b>Почта:</b>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 {% endblock %}
