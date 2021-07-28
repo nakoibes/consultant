@@ -9,13 +9,15 @@
       href="{{url_for('.static', filename='mystyle.css')}}">
 {% endblock %}
 {% block content %}
-<div class="none_flex_header">
-    <img src="{{url_for('images',path='house.jpeg')}}" width="80" height="80" alt="">
-</div>
+<!--<div class="none_flex_header">-->
+<!--    <img src="{{url_for('images',path='house.jpeg')}}" width="80" height="80" alt="">-->
+<!--</div>-->
 <div class="header">
     <span class="header_name">
         {% if data.name%}
+        <b>
         {{data.name}}
+            </b>
         {%endif%}
     </span>
     <span class="search_field">
@@ -33,13 +35,16 @@
 
     </span>
     <span class="otch">
-        <a href="{{url_for('otchet',data = data) }}">Скачать отчет</a>
+        {%if data.inn%}
+        <a href="{{url_for('otchet',data = data) }}" class="black">Скачать отчет</a>
+        {%endif%}
     </span>
 </div>
 <div class="main">
 
     {% block app_content %}{% endblock %}
-<!--</div>-->
+</div>
+<div class="sved">Сведения носят справочный характер. КонтрагентПлюс не несет ответственность за достоверность предоставляемой информации</div><br><br>
 <!--<div class="footer">-->
 <!--    <div class="footer_flex">-->
 <!--        <div class="footer_first">-->
@@ -55,5 +60,4 @@
 <!--            <b>Почта:</b>-->
 <!--        </div>-->
 <!--    </div>-->
-</div>
 {% endblock %}

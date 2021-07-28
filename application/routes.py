@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from ast import literal_eval
 import pdfkit as pdf
 import requests as requests
+import locale
 
 from application.app import app, db
 from flask import render_template, redirect, url_for, request, Response, jsonify
@@ -23,8 +24,6 @@ def index():
 @app.route("/search/<inn>", methods=["GET", "POST"])
 def search(inn):
     form = SearchForm()
-    # if otchet_form.validate_on_submit():
-    #     otchet(result)
     if form.validate_on_submit():
         return redirect(url_for("search", inn=form.search_field.data))
     if inn.isdigit():
@@ -36,14 +35,27 @@ def search(inn):
             else:
                 result = None
         else:
+            locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
             result = get_from_db(inn)
         if result:
             result.update({"date": datetime.today().strftime("%-d %B %Y")})
 
             warn = analyze(result)
             result = alter(result)
+            if result.get("status") == "Действующая":
+                result.update({"status": "Действующее"})
+            if warn.get("nalog_offense"):
+                warn.update({"nalog_offense": warn.get("nalog_offense")[16:-1]})
             if result.get("nalog_debt") == "Не имеет задолженность":
                 result.update({"nalog_debt": "Задолженностей не выявлено"})
+            if warn.get("status") == "Находится в процедуре банкротства":
+                warn.update({"status": "В процедуре банкротства"})
+            elif warn.get("status") == "Находится в процессе реорганизации":
+                warn.update({"status": "В процессе реорганизации"})
+            elif warn.get("status") == "Находится в процессе реорганизации":
+                warn.update({"status": "В процессе реорганизации"})
+            elif warn.get("status") == "Находится в стадии ликвидации":
+                warn.update({"status": "В стадии ликвидации"})
             print(result)
             return render_template("result.html", data=result, form=form, warn=warn)
         else:
@@ -61,7 +73,6 @@ def otchet():
                           css="application/static/otchet.css", options=options)
     response = Response(res, mimetype="application/pdf")
     response.headers['Content-Disposition'] = "attachment; filename=result.pdf"
-
     return response
 
 

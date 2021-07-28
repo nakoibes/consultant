@@ -581,6 +581,16 @@ def PB_ul(inn):
 
 
 def getFilename_fromCd(cd):
+    '''REGINA'''
+    if not cd:
+        return None
+    fname = re.findall('filename=(.+)', cd)
+    if len(fname) == 0:
+        return None
+    return fname[0]
+
+
+def getFilename_fromCd(cd):
     if not cd:
         return None
     fname = re.findall('filename=(.+)', cd)
@@ -590,6 +600,7 @@ def getFilename_fromCd(cd):
 
 
 def EGRUL(query):
+    '''REGINA'''
     data = {
         "vyp3CaptchaToken": "",
         "page": "",
@@ -612,6 +623,7 @@ def EGRUL(query):
 
 if __name__ == '__main__':
     pass
+    EGRUL(7743698620)
     # PB_addr('Адыгея Респ,,Майкоп г,,Краснооктябрьская ул,21,,')
     # PB_neskolko_UL('221100996554')
     # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
@@ -621,8 +633,8 @@ if __name__ == '__main__':
     # if __name__ == '__main__':
     #     print(kadarbitr_1("7728168971"))
     #
-    a = fedresurs("7743698620")
-    pprint(a)
+    # a = fedresurs("7743698620")
+    # pprint(a)
 # inn = a[1]
 
 # pprint(PB_diskvalif("910226990921"))

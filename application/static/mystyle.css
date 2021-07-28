@@ -10,11 +10,12 @@
 /*  padding:          10px 10px 10px 10px;*/
 /*}*/
 body {
-    color: black;
+    /*color: black;*/
+    color: #333333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.42857143;
-    background-color: #E5E5E5;
+    background-color: #353535;
     height: 100%;
 }
 
@@ -117,16 +118,23 @@ div.none_flex_header {
 
 span.header_name {
     color: black;
+    font-size: 20px;
     /*border-radius: 7px;*/
     border-bottom-left-radius: 7px;
     border-top-left-radius: 7px;
-    font-size: large;
-    background-color: #257985;
+    /*font-size: large;*/
+
+
+    background-color: Grey;
+    /*background-color: #257985;*/
+
+
     /*margin-top: 2%;*/
     /*margin-bottom: 5%;*/
     /*margin-left:      0;*/
     /*margin-right: 10%;*/
     width: 25%;
+    text-align: center;
     /*height: 50px;*/
     /*border: 1px dotted gray;*/
     /*padding: 40px 10px 10px 30px;*/
@@ -139,7 +147,13 @@ span.header_name {
 span.search_field {
     font-family: Verdana, Geneva, Arial, sans-serif;
     /*font-size: medium;*/
-    background-color: #5EA8A7;
+    color: black;
+
+
+    /*background-color: #5EA8A7;*/
+    background-color: #FF8D40;
+
+
     /*margin-top:       2%;*/
     /*margin-bottom: 5%;*/
     /*margin-left: 0;*/
@@ -156,7 +170,10 @@ span.search_field {
 
 span.menu {
     /*font-size: medium;*/
-    background-color: #5EA8A7;
+
+    /*background-color: #5EA8A7;*/
+    background-color: #FF8D40;
+
     /*margin-top:       2%;*/
     /*margin-bottom: 5%;*/
     /*margin-left: 30%;*/
@@ -172,7 +189,12 @@ span.otch {
     border-bottom-right-radius: 7px;
     border-top-right-radius: 7px;
     /*font-size: medium;*/
-    background-color: #5EA8A7;
+
+
+    /*background-color: #5EA8A7;*/
+    background-color: #FF8D40;
+
+
     /*margin-top:       2%;*/
     /*margin-bottom: 5%;*/
     /*margin-left: 30%;*/
@@ -214,13 +236,21 @@ span.otch {
 }
 
 a:link {
-    color: black;
+    color: orange;
 }
-
+a.black
+{
+    color: #0f0f0f;
+}
 a:visited {
-    color: black;
+    color: orange;
 }
-
+div.sved
+{
+    margin-left: 5%;
+    margin-top: 2%;
+    color: white;
+}
 a:focus {
     /*border-bottom: 1px solid;*/
     /*background: #BAE498;*/
@@ -233,7 +263,7 @@ a:hover {
 
 a:active {
     /*background: #265301;*/
-    color: black;
+    color: orange;
 }
 
 /*a {*/
@@ -248,6 +278,7 @@ div.main_left {
     border-radius: 7px;
     padding-left: 1%;
     background-color: Snow;
+    /*min-height: 100%;*/
     width: 70%;
 }
 
@@ -262,6 +293,9 @@ div.main_right_first {
     background-color: Snow;
     padding-left: 10px;
     width: 100%;
+    /*min-height: available;*/
+    /*min-height: 57%;*/
+    /*min-height: auto;*/
 }
 
 div.content {
@@ -272,20 +306,45 @@ div.content {
 div.main_right_second {
     border-radius: 7px;
     /*height: fill;*/
+    /*min-height: 50%;*/
     background-color: Snow;
     margin-top: 10px;
     width: 100%;
+    /*min-height:;*/
+}
+
+div.reg_deyat {
+    display: flex;
+}
+
+div.reg {
+    /*padding-top: 5px;*/
+    /*padding-bottom: 5px;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 50%;
+}
+
+div.deyat {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 50%;
 }
 
 div.main_first {
+    padding-left: 10px;
     line-height: 1.5;
     padding-top: 10px;
 }
 
 div.main_second {
-    display: flex;
+    /*display: flex;*/
     line-height: 1.5;
-    padding-top: 10px;
+    padding-top: 20px;
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
 }
 
 div.main_second_left {
@@ -304,6 +363,12 @@ div.main_right_rekv {
 
 div.main_second_left_second {
     display: flex;
+}
+
+div.one {
+    line-height: 1.5;
+    /*width: 50%;*/
+    /*text-align: center;*/
 }
 
 span.one {
@@ -334,6 +399,8 @@ div.other_info {
     margin-top: 10px;
     background-color: Snow;
     border-radius: 7px;
+    /*border-bottom-right-radius: 7px;*/
+    /*border-bottom-left-radius: 7px;*/
 }
 
 div.other_info_flex {
@@ -351,6 +418,7 @@ div.other_first {
 div.other_second {
     padding-top: 1%;
     padding-left: 1%;
+    margin-left: 30px;
 
 }
 
@@ -416,6 +484,7 @@ div.index_right {
     width: 50%;
     margin-left: 1%;
 }
-ul{
+
+ul {
     line-height: 1;
 }
