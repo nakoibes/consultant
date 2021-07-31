@@ -1,22 +1,22 @@
 
 * Клонируем проект
 * Поднимаем MongoDM в докере
-* ```bash
+```bash
 sudo docker-compose up -d
 ```
 * Создаем виртуальное окружение 
 ```bash
 python -m venv venv
 ```
-* Активируем виртуальное окружение
+Активируем виртуальное окружение
 ```bash
 source venv/bin/activate
 ```
-* Устанавливаем зависимости из requirements.txt
+Устанавливаем зависимости из requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
-* Устанавливаем переменные окружения
+Устанавливаем переменные окружения
 ```bash
 export FLASK_APP=wsgi.py
 ```
