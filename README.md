@@ -22,6 +22,6 @@ export FLASK_APP=wsgi.py
 ```
 * Загружаем tor браузер https://www.torproject.org/download/
 * Запускаем tor браузер
-* Загружаем geckodriver https://github.com/mozilla/geckodriver/releases
+* Загружаем geckodriver https://github.com/mozilla/geckodriver
 * В config переменной firefox_path присваиваем путь до gekodriver
 * Запускаем приложение командой flask run
